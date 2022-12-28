@@ -10,6 +10,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Controller
 @Tag(name = "Stableford Scoring Service Endpoints")
 @RequestMapping(path = "/api/v1/stableford")
@@ -29,8 +31,7 @@ public class StablefordScoringController {
 
     @GetMapping
     /** Add security here*/
-    public @ResponseBody StablefordScore getStablefordScores() {
-//        return (StablefordScore) stablefordScoringService.getAllScores();
-        return new StablefordScore();
+    public @ResponseBody List<StablefordScore> getStablefordScores() {
+        return stablefordScoringService.getAllScores();
     }
 }

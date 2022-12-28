@@ -1,13 +1,8 @@
 package com.example.stablefordscoringservice.entiry;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Data;
-import org.hibernate.annotations.GenericGenerator;
 
-import java.math.BigDecimal;
 import java.util.UUID;
 
 @Entity
@@ -16,17 +11,33 @@ import java.util.UUID;
 public class StablefordScore {
 
     @Id
-    @GeneratedValue(generator = "UUID")
-//    @Type(type = "uuid-char")
-    @GenericGenerator(
-            name = "UUID",
-            strategy = "org.hibernate.id.UUIDGenerator"
-    )
-    private UUID id;
-    private BigDecimal meter;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
+    private String code;
+    private String length;
     private String par;
     private String index;
     private String stroke;
     private String stablefordScore;
+    private Double teeOffLength;
+    private String teeOffDirection;
+    private Integer putt;
 
+
+
+    public StablefordScore() {
+    }
+
+    public StablefordScore(Long id, String code, String length, String par, String index, String stroke, String stablefordScore, Double teeOffLength, String teeOffDirection, Integer putt) {
+        this.id = id;
+        this.code = code;
+        this.length = length;
+        this.par = par;
+        this.index = index;
+        this.stroke = stroke;
+        this.stablefordScore = stablefordScore;
+        this.teeOffLength = teeOffLength;
+        this.teeOffDirection = teeOffDirection;
+        this.putt = putt;
+    }
 }

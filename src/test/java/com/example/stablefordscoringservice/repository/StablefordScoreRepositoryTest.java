@@ -1,11 +1,12 @@
 package com.example.stablefordscoringservice.repository;
 
-import com.example.stablefordscoringservice.entiry.StablefordScore;
+import com.example.stablefordscoringservice.entity.StablefordScore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.junit4.SpringRunner;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.Arrays;
 import java.util.List;

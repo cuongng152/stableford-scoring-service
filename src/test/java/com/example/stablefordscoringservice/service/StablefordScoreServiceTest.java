@@ -1,9 +1,12 @@
 package com.example.stablefordscoringservice.service;
 
 import com.example.stablefordscoringservice.StablefordScoringServiceApplication;
-import com.example.stablefordscoringservice.entiry.StablefordScore;
+import com.example.stablefordscoringservice.entity.StablefordScore;
+import com.example.stablefordscoringservice.exceptions.CustomDataNotFoundException;
+import com.example.stablefordscoringservice.exceptions.NullScoreException;
 import com.example.stablefordscoringservice.repository.StablefordScoringRepository;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -19,6 +22,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.*;
 
@@ -73,9 +77,29 @@ public class StablefordScoreServiceTest {
         UUID id = UUID.randomUUID();
         StablefordScore score = new StablefordScore(id, "271220221", "475", "5", "2", "5", "3", 190.00, "Hit", 2);
         when(stablefordScoringRepository.findById(id)).thenReturn(Optional.of(score));
-        Optional<StablefordScore> result = stablefordScoringService.getScoreById(id);
+        Optional<StablefordScore> result = stablefordScoringService.getScoreById(id.toString());
         assertThat(result).isNotNull();
         assertEquals(Optional.of(score), result);
         verify(stablefordScoringRepository, times(1)).findById(id);
+    }
+
+    @DisplayName("Throw an exception when data returns null")
+    @Test
+    public void throwExceptionWhenDataReturnsNull() {
+        UUID id = UUID.randomUUID();
+        when(stablefordScoringRepository.findById(id)).thenReturn(null);
+        assertThrows(NullScoreException.class, () -> {
+            stablefordScoringService.getScoreById(id.toString());
+        });
+    }
+
+    @DisplayName("Throw an exception when data not found")
+    @Disabled
+    @Test
+    public void throwExceptionWhenDataIsNotFound() {
+        when(stablefordScoringRepository.findAll()).thenReturn(null);
+        assertThrows(CustomDataNotFoundException.class, () -> {
+            stablefordScoringService.getAllScores();
+        });
     }
 }

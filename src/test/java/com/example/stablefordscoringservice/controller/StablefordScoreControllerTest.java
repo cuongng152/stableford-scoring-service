@@ -1,6 +1,6 @@
 package com.example.stablefordscoringservice.controller;
 
-import com.example.stablefordscoringservice.entiry.StablefordScore;
+import com.example.stablefordscoringservice.entity.StablefordScore;
 import com.example.stablefordscoringservice.service.StablefordScoringService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
@@ -64,7 +64,7 @@ public class StablefordScoreControllerTest {
         Optional<StablefordScore> result = Optional.of(score);
 
 
-        when(stablefordScoringService.getScoreById(id)).thenReturn(result);
+        when(stablefordScoringService.getScoreById(id.toString())).thenReturn(result);
         mockMvc.perform(get("/api/v1/stableford/{id}", id)).andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(id.toString()))
                 .andExpect(jsonPath("$.code").value(score.getCode()))

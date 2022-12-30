@@ -1,13 +1,12 @@
 package com.example.stablefordscoringservice.service;
 
-import com.example.stablefordscoringservice.entiry.StablefordScore;
+import com.example.stablefordscoringservice.entity.StablefordScore;
+import com.example.stablefordscoringservice.exceptions.CustomDataNotFoundException;
+import com.example.stablefordscoringservice.exceptions.NullScoreException;
 import com.example.stablefordscoringservice.repository.StablefordScoringRepository;
-import com.fasterxml.jackson.databind.ser.std.IterableSerializer;
-import jakarta.xml.ws.http.HTTPException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -20,25 +19,34 @@ public class StablefordScoringImplementation implements StablefordScoringService
     private StablefordScoringRepository stablefordScoringRepository;
     @Override
     public List<StablefordScore> getAllScores() {
-        List<StablefordScore> result = new ArrayList<>();
-        result = stablefordScoringRepository.findAll();
+        List<StablefordScore> result;
+        try {
+            result = stablefordScoringRepository.findAll();
+        } catch (Exception e) {
+            throw new CustomDataNotFoundException(e.getMessage());
+        }
         return result;
     }
 
     @Override
     public String addScore(StablefordScore score) {
-        StablefordScore newScore = new StablefordScore();
+        StablefordScore newScore;
         newScore = stablefordScoringRepository.save(score);
         return newScore.getCode();
     }
 
     @Override
-    public Optional<StablefordScore> getScoreById(UUID id) {
-        Optional<StablefordScore> result = null;
-        Optional<StablefordScore> score = stablefordScoringRepository.findById(id);
-        if (score.isPresent()) {
-             result = score;
+    public Optional<StablefordScore> getScoreById(String id) {
+        Optional<StablefordScore> result = Optional.empty();
+        Optional<StablefordScore> score = stablefordScoringRepository.findById(UUID.fromString(id));
+        try {
+            if (score.isPresent()) {
+                result = score;
+            }
+        } catch (NullPointerException e) {
+            throw new NullScoreException(e.getMessage());
         }
+
         return result;
     }
 

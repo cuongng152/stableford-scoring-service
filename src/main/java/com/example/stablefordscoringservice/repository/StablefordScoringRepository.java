@@ -1,6 +1,6 @@
 package com.example.stablefordscoringservice.repository;
 
-import com.example.stablefordscoringservice.entiry.StablefordScore;
+import com.example.stablefordscoringservice.entity.StablefordScore;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

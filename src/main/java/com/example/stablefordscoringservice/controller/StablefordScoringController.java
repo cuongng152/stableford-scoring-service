@@ -1,6 +1,6 @@
 package com.example.stablefordscoringservice.controller;
 
-import com.example.stablefordscoringservice.entiry.StablefordScore;
+import com.example.stablefordscoringservice.entity.StablefordScore;
 import com.example.stablefordscoringservice.service.StablefordScoringService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 @Controller
 @Tag(name = "Stableford Scoring Service Endpoints")
@@ -54,7 +53,7 @@ public class StablefordScoringController {
     @GetMapping("/{id}")
     @Operation(security = {@SecurityRequirement(name = "bearer-key")})
 
-    public @ResponseBody Optional<StablefordScore> getById(@PathVariable UUID id) {
+    public @ResponseBody Optional<StablefordScore> getById(@PathVariable String id) {
         return stablefordScoringService.getScoreById(id);
     }
 

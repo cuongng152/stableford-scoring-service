@@ -11,7 +11,7 @@ import java.io.StringWriter;
 class CustomControllerAdvice {
     // ...
 
-    @ExceptionHandler(CustomDataNotFoundException.class)
+    @ExceptionHandler({CustomDataNotFoundException.class, NullScoreException.class})
     public ResponseEntity<ErrorResponse> handleCustomDataNotFoundExceptions(
             Exception e
     ) {

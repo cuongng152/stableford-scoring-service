@@ -2,8 +2,10 @@ package com.example.stablefordscoringservice.controller;
 
 import com.example.stablefordscoringservice.entiry.StablefordScore;
 import com.example.stablefordscoringservice.service.StablefordScoringService;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -12,6 +14,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 @Controller
 @Tag(name = "Stableford Scoring Service Endpoints")
@@ -45,5 +49,20 @@ public class StablefordScoringController {
     })
     public @ResponseBody String create(@RequestBody StablefordScore newScore) {
         return stablefordScoringService.addScore(newScore);
+    }
+
+    @GetMapping("/{id}")
+    @Operation(security = {@SecurityRequirement(name = "bearer-key")})
+
+    public @ResponseBody Optional<StablefordScore> getById(@PathVariable UUID id) {
+        return stablefordScoringService.getScoreById(id);
+    }
+
+    @PutMapping("/{id}")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "Score updated"),
+    })
+    public @ResponseBody StablefordScore updateById(@PathVariable String id, @RequestBody StablefordScore updatedScore) {
+        return stablefordScoringService.updateScoreById(id, updatedScore);
     }
 }

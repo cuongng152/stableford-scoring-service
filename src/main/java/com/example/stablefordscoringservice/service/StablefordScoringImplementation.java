@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 
 @Service
@@ -19,21 +21,8 @@ public class StablefordScoringImplementation implements StablefordScoringService
     @Override
     public List<StablefordScore> getAllScores() {
         List<StablefordScore> result = new ArrayList<>();
-        try {
-            result = stablefordScoringRepository.findAll();
-        } catch (HTTPException e) {
-            System.out.println(e);
-        }
+        result = stablefordScoringRepository.findAll();
         return result;
-//        List<StablefordScore> retListOfScores = new ArrayList<>();
-//        Long id = 1L;
-//        retListOfScores.add(new StablefordScore(
-//                id, "271220221", "475", "5", "2", "5", "3", 190.00, "Hit", 2
-//        ));
-//        retListOfScores.add(new StablefordScore(
-//                id, "271220221", "140", "3", "9", "4", "1", 200.00, "Left", 2
-//        ));
-//        return retListOfScores;
     }
 
     @Override
@@ -41,6 +30,25 @@ public class StablefordScoringImplementation implements StablefordScoringService
         StablefordScore newScore = new StablefordScore();
         newScore = stablefordScoringRepository.save(score);
         return newScore.getCode();
+    }
+
+    @Override
+    public Optional<StablefordScore> getScoreById(UUID id) {
+        Optional<StablefordScore> result = null;
+        Optional<StablefordScore> score = stablefordScoringRepository.findById(id);
+        if (score.isPresent()) {
+             result = score;
+        }
+        return result;
+    }
+
+    @Override
+    public StablefordScore updateScoreById(String id, StablefordScore updatedScore) {
+        Optional<StablefordScore> score = stablefordScoringRepository.findById(UUID.fromString(id));
+        if (score.isPresent()) {
+            stablefordScoringRepository.save(updatedScore);
+        }
+        return updatedScore;
     }
 
 

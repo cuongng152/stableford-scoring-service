@@ -9,6 +9,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
@@ -22,11 +24,11 @@ public class StablefordScoreRepositoryTest {
 
     @Test
     public void shouldFindAllScores() {
-        Long id = 1L;
+        UUID id = UUID.randomUUID();
         StablefordScore score1 = new StablefordScore(id, "271220221", "475", "5", "2", "5", "3", 190.00, "Hit", 2);
-        stablefordScoringRepository.save(score1);
+        StablefordScore newInsert = stablefordScoringRepository.save(score1);
 
-        List<StablefordScore> expected = Arrays.asList(score1);
+        List<StablefordScore> expected = Arrays.asList(newInsert);
 
         List<StablefordScore> actual = stablefordScoringRepository.findAll();
 
@@ -36,10 +38,21 @@ public class StablefordScoreRepositoryTest {
 
     @Test
     public void shouldAddNewScore() {
-        Long id = 1L;
+        UUID id = UUID.randomUUID();
         StablefordScore newScore = new StablefordScore(id, "271220221", "475", "5", "2", "5", "3", 190.00, "Hit", 2);
         stablefordScoringRepository.save(newScore);
         List<StablefordScore> scoreList = stablefordScoringRepository.findAll();
         assertEquals(scoreList.get(0).getCode(), "271220221");
+    }
+
+    @Test
+    public void shouldGetScoreById() {
+        UUID id = UUID.randomUUID();
+        StablefordScore score = new StablefordScore(id, "271220221", "475", "5", "2", "5", "3", 190.00, "Hit", 2);
+
+        StablefordScore newInsert = stablefordScoringRepository.save(score);
+        Optional<StablefordScore> actual = stablefordScoringRepository.findById(newInsert.getId());
+
+        assertEquals(actual, Optional.of(newInsert));
     }
 }

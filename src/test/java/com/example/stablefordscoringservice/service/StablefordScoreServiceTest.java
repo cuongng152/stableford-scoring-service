@@ -15,6 +15,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
@@ -39,7 +41,7 @@ public class StablefordScoreServiceTest {
     @DisplayName("JUnit test for returning list of stableford scores")
     @Test
     public void givenStablefordScoresList_whenGetAllStablefordScores_thenReturnStablefordScoreList() {
-        Long id = 1L;
+        UUID id = UUID.randomUUID();
         StablefordScore score =  new StablefordScore(id, "271220221", "475", "5", "2", "5", "3", 190.00, "Hit", 2);
 
         /** given - precondition setup */
@@ -58,10 +60,22 @@ public class StablefordScoreServiceTest {
     @DisplayName("JUnit test for creating new stableford scores")
     @Test
     public void createNewStablefordScore() {
-        Long id = 1L;
+        UUID id = UUID.randomUUID();
         StablefordScore newScore = new StablefordScore(id, "271220221", "475", "5", "2", "5", "3", 190.00, "Hit", 2);
         when(stablefordScoringRepository.save(newScore)).thenReturn(newScore);
         String code = stablefordScoringService.addScore(newScore);
         assertEquals(code, newScore.getCode());
+    }
+
+    @DisplayName("JUnit test for find score by id")
+    @Test
+    public void findScoreById() {
+        UUID id = UUID.randomUUID();
+        StablefordScore score = new StablefordScore(id, "271220221", "475", "5", "2", "5", "3", 190.00, "Hit", 2);
+        when(stablefordScoringRepository.findById(id)).thenReturn(Optional.of(score));
+        Optional<StablefordScore> result = stablefordScoringService.getScoreById(id);
+        assertThat(result).isNotNull();
+        assertEquals(Optional.of(score), result);
+        verify(stablefordScoringRepository, times(1)).findById(id);
     }
 }

@@ -56,4 +56,19 @@ public class StablefordScoreRepositoryTest {
 
         assertEquals(actual, Optional.of(newInsert));
     }
+
+    @Test
+    public void shouldUpdateScoreById() {
+        UUID id = UUID.randomUUID();
+        StablefordScore score = new StablefordScore(id, "271220221", "475", "5", "2", "5", "3", 190.00, "Hit", 2);
+        StablefordScore newInsert = stablefordScoringRepository.save(score);
+        Optional<StablefordScore> result = stablefordScoringRepository.findById(newInsert.getId());
+        result.get().setTeeOffLength(210.00);
+        result.get().setTeeOffDirection("Miss Hit");
+
+        StablefordScore updatedScore = stablefordScoringRepository.save(result.get());
+
+        assertEquals(updatedScore.getTeeOffDirection(), "Miss Hit");
+        assertEquals(updatedScore.getTeeOffLength(), Double.valueOf(210.00));
+    }
 }

@@ -102,4 +102,28 @@ public class StablefordScoreServiceTest {
             stablefordScoringService.getAllScores();
         });
     }
+
+    @DisplayName("JUnit test for update score by id")
+    @Test
+    public void updateScoreById() {
+        UUID id = UUID.randomUUID();
+        StablefordScore score = new StablefordScore(id, "271220221", "475", "5", "2", "5", "3", 190.00, "Hit", 2);
+        StablefordScore newScore = new StablefordScore(id, "271220221", "475", "5", "2", "5", "3", 210.00, "Miss Hit", 3);
+        when(stablefordScoringRepository.findById(id)).thenReturn(Optional.of(score));
+        StablefordScore result = stablefordScoringService.updateScoreById(id.toString(), newScore);
+        assertThat(result).isNotNull();
+        assertEquals(result.getTeeOffLength(), Double.valueOf(210.00));
+        assertEquals(result.getTeeOffDirection(), "Miss Hit");
+        verify(stablefordScoringRepository, times(1)).findById(id);
+    }
+
+    @DisplayName("Throw an exception when data returns null when updating")
+    @Test
+    public void throwExceptionWhenDataReturnsNullInUpdating() {
+        UUID id = UUID.randomUUID();
+        when(stablefordScoringRepository.findById(id)).thenReturn(null);
+        assertThrows(NullScoreException.class, () -> {
+            stablefordScoringService.updateScoreById(id.toString(), any(StablefordScore.class));
+        });
+    }
 }

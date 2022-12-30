@@ -53,8 +53,12 @@ public class StablefordScoringImplementation implements StablefordScoringService
     @Override
     public StablefordScore updateScoreById(String id, StablefordScore updatedScore) {
         Optional<StablefordScore> score = stablefordScoringRepository.findById(UUID.fromString(id));
-        if (score.isPresent()) {
-            stablefordScoringRepository.save(updatedScore);
+        try {
+            if (score.isPresent()) {
+                stablefordScoringRepository.save(updatedScore);
+            }
+        } catch (NullPointerException e) {
+            throw new NullScoreException(e.getMessage());
         }
         return updatedScore;
     }

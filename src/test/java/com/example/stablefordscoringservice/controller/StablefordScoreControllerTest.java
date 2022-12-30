@@ -12,9 +12,9 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.*;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 
@@ -73,22 +73,21 @@ public class StablefordScoreControllerTest {
                 .andDo(print());
     }
 
-//    @Test
-//    void shouldUpdateScore() throws Exception {
-//        long id = 1L;
-//
-//        StablefordScore existingScore = new StablefordScore(id, "271220221", "475", "5", "2", "5", "3", 190.00, "Hit", 2);
-//        StablefordScore newScore = new StablefordScore(id, "271220221", "475", "5", "2", "5", "3", 210.00, "Miss Hit", 3);
-//
-//        when(stablefordScoringService.findById(id)).thenReturn(Optional.of(tutorial));
-//        when(tutorialRepository.save(any(Tutorial.class))).thenReturn(updatedtutorial);
-//
-//        mockMvc.perform(put("/api/tutorials/{id}", id).contentType(MediaType.APPLICATION_JSON)
-//                        .content(objectMapper.writeValueAsString(updatedtutorial)))
-//                .andExpect(status().isOk())
-//                .andExpect(jsonPath("$.title").value(updatedtutorial.getTitle()))
-//                .andExpect(jsonPath("$.description").value(updatedtutorial.getDescription()))
-//                .andExpect(jsonPath("$.published").value(updatedtutorial.isPublished()))
-//                .andDo(print());
-//    }
+    @Test
+    void shouldUpdateScore() throws Exception {
+        UUID id = UUID.randomUUID();
+
+        StablefordScore existingScore = new StablefordScore(id, "271220221", "475", "5", "2", "5", "3", 190.00, "Hit", 2);
+        StablefordScore newScore = new StablefordScore(id, "271220221", "475", "5", "2", "5", "3", 210.00, "Miss Hit", 3);
+
+        when(stablefordScoringService.getScoreById(id.toString())).thenReturn(Optional.of(existingScore));
+        when(stablefordScoringService.updateScoreById(id.toString(), newScore)).thenReturn(newScore);
+
+        mockMvc.perform(put("/api/v1/stableford/{id}", id).contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(newScore)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.teeOffLength").value(newScore.getTeeOffLength()))
+                .andExpect(jsonPath("$.teeOffDirection").value(newScore.getTeeOffDirection()))
+                .andDo(print());
+    }
 }

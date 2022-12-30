@@ -1,7 +1,8 @@
 package com.example.stablefordscoringservice.controller;
 
+import com.example.stablefordscoringservice.entity.CourseScore;
 import com.example.stablefordscoringservice.entity.StablefordScore;
-import com.example.stablefordscoringservice.service.StablefordScoringService;
+import com.example.stablefordscoringservice.service.coursescore.CourseScoringService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -17,8 +18,8 @@ import java.util.List;
 import java.util.Optional;
 
 @Controller
-@Tag(name = "Stableford Scoring Service Endpoints")
-@RequestMapping(path = "/api/v1/stableford")
+@Tag(name = "Course Scoring Service Endpoints")
+@RequestMapping(path = "/api/v1/course")
 @CrossOrigin(origins = "*")
 @ResponseStatus(HttpStatus.OK)
 @ApiResponses(value = {
@@ -28,16 +29,15 @@ import java.util.Optional;
         @ApiResponse(responseCode = "403", description = "Forbidden - User not authorized"),
         @ApiResponse(responseCode = "404", description = "Not found")
 })
-public class StablefordScoringController {
-
+public class CourseScoreController {
     @Autowired
-    private StablefordScoringService stablefordScoringService;
+    private CourseScoringService courseScoringService;
 
     @GetMapping
     /** Add security here*/
-    public @ResponseBody List<StablefordScore> getStablefordScores() {
-        List<StablefordScore> response;
-            response = stablefordScoringService.getAllScores();
+    public @ResponseBody List<CourseScore> getStablefordScores() {
+        List<CourseScore> response;
+        response = courseScoringService.getAllScores();
         return response;
     }
 
@@ -46,22 +46,21 @@ public class StablefordScoringController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Score added"),
     })
-    public @ResponseBody String create(@RequestBody StablefordScore newScore) {
-        return stablefordScoringService.addScore(newScore);
+    public @ResponseBody String create(@RequestBody CourseScore newScore) {
+        return courseScoringService.addScore(newScore);
     }
 
     @GetMapping("/{id}")
     @Operation(security = {@SecurityRequirement(name = "bearer-key")})
-
-    public @ResponseBody Optional<StablefordScore> getById(@PathVariable String id) {
-        return stablefordScoringService.getScoreById(id);
+    public @ResponseBody Optional<CourseScore> getById(@PathVariable String id) {
+        return courseScoringService.getScoreById(id);
     }
 
     @PutMapping("/{id}")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204", description = "Score updated"),
     })
-    public @ResponseBody StablefordScore updateById(@PathVariable String id, @RequestBody StablefordScore updatedScore) {
-        return stablefordScoringService.updateScoreById(id, updatedScore);
+    public @ResponseBody CourseScore updateById(@PathVariable String id, @RequestBody CourseScore updatedScore) {
+        return courseScoringService.updateScoreById(id, updatedScore);
     }
 }

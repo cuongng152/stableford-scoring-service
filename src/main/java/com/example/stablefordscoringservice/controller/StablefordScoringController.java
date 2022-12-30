@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -32,6 +33,17 @@ public class StablefordScoringController {
     @GetMapping
     /** Add security here*/
     public @ResponseBody List<StablefordScore> getStablefordScores() {
-        return stablefordScoringService.getAllScores();
+        List<StablefordScore> response = new ArrayList<>();
+            response = stablefordScoringService.getAllScores();
+        return response;
+    }
+
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Score added"),
+    })
+    public @ResponseBody String create(@RequestBody StablefordScore newScore) {
+        return stablefordScoringService.addScore(newScore);
     }
 }

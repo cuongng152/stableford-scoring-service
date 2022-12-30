@@ -4,6 +4,10 @@ server:
     path: /error
 
 spring:
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
   application:
     name: stableford-scoring-service
   security:

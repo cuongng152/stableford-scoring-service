@@ -6,4 +6,5 @@ import java.util.List;
 
 public interface StablefordScoringService {
     List<StablefordScore> getAllScores();
+    String addScore(StablefordScore score);
 }

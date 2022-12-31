@@ -1,10 +1,11 @@
-package com.example.stablefordscoringservice.service;
+package com.example.stablefordscoringservice.stablefordscore.service;
 
 import com.example.stablefordscoringservice.StablefordScoringServiceApplication;
 import com.example.stablefordscoringservice.entity.StablefordScore;
 import com.example.stablefordscoringservice.exceptions.CustomDataNotFoundException;
 import com.example.stablefordscoringservice.exceptions.NullScoreException;
 import com.example.stablefordscoringservice.repository.StablefordScoringRepository;
+import com.example.stablefordscoringservice.service.StablefordScoringImplementation;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;

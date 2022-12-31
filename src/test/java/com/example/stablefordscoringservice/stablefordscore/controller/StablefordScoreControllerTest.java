@@ -1,5 +1,6 @@
-package com.example.stablefordscoringservice.controller;
+package com.example.stablefordscoringservice.stablefordscore.controller;
 
+import com.example.stablefordscoringservice.controller.StablefordScoringController;
 import com.example.stablefordscoringservice.entity.StablefordScore;
 import com.example.stablefordscoringservice.service.StablefordScoringService;
 import com.fasterxml.jackson.databind.ObjectMapper;

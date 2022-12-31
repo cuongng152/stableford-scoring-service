@@ -1,6 +1,7 @@
-package com.example.stablefordscoringservice.repository;
+package com.example.stablefordscoringservice.stablefordscore.repository;
 
 import com.example.stablefordscoringservice.entity.StablefordScore;
+import com.example.stablefordscoringservice.repository.StablefordScoringRepository;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

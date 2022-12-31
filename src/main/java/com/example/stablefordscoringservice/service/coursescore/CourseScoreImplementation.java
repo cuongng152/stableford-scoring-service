@@ -1,7 +1,6 @@
 package com.example.stablefordscoringservice.service.coursescore;
 
 import com.example.stablefordscoringservice.entity.CourseScore;
-import com.example.stablefordscoringservice.entity.StablefordScore;
 import com.example.stablefordscoringservice.exceptions.CustomDataNotFoundException;
 import com.example.stablefordscoringservice.exceptions.NullScoreException;
 import com.example.stablefordscoringservice.repository.CourseScoreRepository;
@@ -20,7 +19,7 @@ public class CourseScoreImplementation implements CourseScoringService {
     private CourseScoreRepository courseScoreRepository;
     @Override
     public List<CourseScore> getAllScores() {
-        Iterable<CourseScore> result = null;
+        Iterable<CourseScore> result;
         try {
             result = courseScoreRepository.findAll();
         } catch (Exception e) {

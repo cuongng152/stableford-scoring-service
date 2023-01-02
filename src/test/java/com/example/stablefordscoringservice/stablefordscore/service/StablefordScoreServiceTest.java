@@ -5,7 +5,7 @@ import com.example.stablefordscoringservice.entity.StablefordScore;
 import com.example.stablefordscoringservice.exceptions.CustomDataNotFoundException;
 import com.example.stablefordscoringservice.exceptions.NullScoreException;
 import com.example.stablefordscoringservice.repository.StablefordScoringRepository;
-import com.example.stablefordscoringservice.service.StablefordScoringImplementation;
+import com.example.stablefordscoringservice.service.stablefordscore.StablefordScoringImplementation;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
@@ -47,7 +47,7 @@ public class StablefordScoreServiceTest {
     @Test
     public void givenStablefordScoresList_whenGetAllStablefordScores_thenReturnStablefordScoreList() {
         UUID id = UUID.randomUUID();
-        StablefordScore score =  new StablefordScore(id, "271220221", "475", "5", "2", "5", "3", 190.00, "Hit", 2);
+        StablefordScore score =  new StablefordScore(id, "271220221", "475", "5", "2", "5", "3");
 
         /** given - precondition setup */
         when(stablefordScoringRepository.findAll()).thenReturn(Arrays.asList(score));
@@ -66,7 +66,7 @@ public class StablefordScoreServiceTest {
     @Test
     public void createNewStablefordScore() {
         UUID id = UUID.randomUUID();
-        StablefordScore newScore = new StablefordScore(id, "271220221", "475", "5", "2", "5", "3", 190.00, "Hit", 2);
+        StablefordScore newScore = new StablefordScore(id, "271220221", "475", "5", "2", "5", "3");
         when(stablefordScoringRepository.save(newScore)).thenReturn(newScore);
         String code = stablefordScoringService.addScore(newScore);
         assertEquals(code, newScore.getCode());
@@ -76,7 +76,7 @@ public class StablefordScoreServiceTest {
     @Test
     public void findScoreById() {
         UUID id = UUID.randomUUID();
-        StablefordScore score = new StablefordScore(id, "271220221", "475", "5", "2", "5", "3", 190.00, "Hit", 2);
+        StablefordScore score = new StablefordScore(id, "271220221", "475", "5", "2", "5", "3");
         when(stablefordScoringRepository.findById(id)).thenReturn(Optional.of(score));
         Optional<StablefordScore> result = stablefordScoringService.getScoreById(id.toString());
         assertThat(result).isNotNull();
@@ -108,13 +108,13 @@ public class StablefordScoreServiceTest {
     @Test
     public void updateScoreById() {
         UUID id = UUID.randomUUID();
-        StablefordScore score = new StablefordScore(id, "271220221", "475", "5", "2", "5", "3", 190.00, "Hit", 2);
-        StablefordScore newScore = new StablefordScore(id, "271220221", "475", "5", "2", "5", "3", 210.00, "Miss Hit", 3);
+        StablefordScore score = new StablefordScore(id, "271220221", "475", "5", "2", "5", "3");
+        StablefordScore newScore = new StablefordScore(id, "271220221", "475", "5", "2", "5", "3");
         when(stablefordScoringRepository.findById(id)).thenReturn(Optional.of(score));
         StablefordScore result = stablefordScoringService.updateScoreById(id.toString(), newScore);
         assertThat(result).isNotNull();
-        assertEquals(result.getTeeOffLength(), Double.valueOf(210.00));
-        assertEquals(result.getTeeOffDirection(), "Miss Hit");
+        assertEquals(result.getLength(), String.valueOf(475));
+        assertEquals(result.getPar(), String.valueOf(5));
         verify(stablefordScoringRepository, times(1)).findById(id);
     }
 

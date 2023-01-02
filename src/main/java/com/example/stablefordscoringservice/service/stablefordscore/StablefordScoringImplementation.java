@@ -1,4 +1,4 @@
-package com.example.stablefordscoringservice.service;
+package com.example.stablefordscoringservice.service.stablefordscore;
 
 import com.example.stablefordscoringservice.entity.StablefordScore;
 import com.example.stablefordscoringservice.exceptions.CustomDataNotFoundException;

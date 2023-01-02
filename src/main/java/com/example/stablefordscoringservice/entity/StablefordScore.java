@@ -1,10 +1,8 @@
 package com.example.stablefordscoringservice.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Data;
+import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.GenericGenerator;
 
 import java.util.UUID;
@@ -27,16 +25,16 @@ public class StablefordScore {
     private String index;
     private String stroke;
     private String stablefordScore;
-    private Double teeOffLength;
-    private String teeOffDirection;
-    private Integer putt;
 
-
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "hole_analysis_id", referencedColumnName = "id")
+    private HoleAnalysis holeAnalysis;
 
     public StablefordScore() {
     }
 
-    public StablefordScore(UUID id, String code, String length, String par, String index, String stroke, String stablefordScore, Double teeOffLength, String teeOffDirection, Integer putt) {
+    public StablefordScore(UUID id, String code, String length, String par, String index, String stroke, String stablefordScore) {
+        super();
         this.id = id;
         this.code = code;
         this.length = length;
@@ -44,8 +42,5 @@ public class StablefordScore {
         this.index = index;
         this.stroke = stroke;
         this.stablefordScore = stablefordScore;
-        this.teeOffLength = teeOffLength;
-        this.teeOffDirection = teeOffDirection;
-        this.putt = putt;
     }
 }

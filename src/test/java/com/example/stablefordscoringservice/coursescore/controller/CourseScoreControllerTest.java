@@ -1,10 +1,7 @@
 package com.example.stablefordscoringservice.coursescore.controller;
 
 import com.example.stablefordscoringservice.controller.CourseScoreController;
-import com.example.stablefordscoringservice.controller.StablefordScoringController;
 import com.example.stablefordscoringservice.entity.CourseScore;
-import com.example.stablefordscoringservice.entity.StablefordScore;
-import com.example.stablefordscoringservice.service.StablefordScoringService;
 import com.example.stablefordscoringservice.service.coursescore.CourseScoringService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
@@ -61,7 +58,7 @@ public class CourseScoreControllerTest {
     }
 
     @Test
-    void shouldReturnStablefordScore() throws Exception {
+    void shouldReturnCourseScore() throws Exception {
         when(service.getScoreById(id.toString())).thenReturn(Optional.of(courseScore));
         mockMvc.perform(get("/api/v1/course/{id}", id)).andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(id.toString()))

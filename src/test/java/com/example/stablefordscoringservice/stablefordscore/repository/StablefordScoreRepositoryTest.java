@@ -1,5 +1,6 @@
 package com.example.stablefordscoringservice.stablefordscore.repository;
 
+import com.example.stablefordscoringservice.entity.HoleAnalysis;
 import com.example.stablefordscoringservice.entity.StablefordScore;
 import com.example.stablefordscoringservice.repository.StablefordScoringRepository;
 import org.junit.Test;
@@ -7,7 +8,6 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.junit4.SpringRunner;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.Arrays;
 import java.util.List;
@@ -23,12 +23,14 @@ public class StablefordScoreRepositoryTest {
 
     @Autowired
     private StablefordScoringRepository stablefordScoringRepository;
+    UUID id = UUID.randomUUID();
+    private StablefordScore newScore = new StablefordScore(id, "271220221", "475", "5", "2", "5", "3");
+    private HoleAnalysis newAnalysis = new HoleAnalysis(210.00, "Hit", 2);
 
     @Test
     public void shouldFindAllScores() {
-        UUID id = UUID.randomUUID();
-        StablefordScore score1 = new StablefordScore(id, "271220221", "475", "5", "2", "5", "3", 190.00, "Hit", 2);
-        StablefordScore newInsert = stablefordScoringRepository.save(score1);
+        newScore.setHoleAnalysis(newAnalysis);
+        StablefordScore newInsert = stablefordScoringRepository.save(newScore);
 
         List<StablefordScore> expected = Arrays.asList(newInsert);
 
@@ -36,40 +38,40 @@ public class StablefordScoreRepositoryTest {
 
         assertThat(actual).hasSize(1);
         assertEquals(actual, expected);
+        assertEquals(Optional.ofNullable(actual.get(0).getHoleAnalysis().getPutt()), Optional.of(2));
     }
 
     @Test
     public void shouldAddNewScore() {
-        UUID id = UUID.randomUUID();
-        StablefordScore newScore = new StablefordScore(id, "271220221", "475", "5", "2", "5", "3", 190.00, "Hit", 2);
+        newScore.setHoleAnalysis(newAnalysis);
         stablefordScoringRepository.save(newScore);
         List<StablefordScore> scoreList = stablefordScoringRepository.findAll();
         assertEquals(scoreList.get(0).getCode(), "271220221");
+        assertEquals(Optional.ofNullable(scoreList.get(0).getHoleAnalysis().getPutt()), Optional.of(2));
     }
 
     @Test
     public void shouldGetScoreById() {
-        UUID id = UUID.randomUUID();
-        StablefordScore score = new StablefordScore(id, "271220221", "475", "5", "2", "5", "3", 190.00, "Hit", 2);
-
-        StablefordScore newInsert = stablefordScoringRepository.save(score);
+        newScore.setHoleAnalysis(newAnalysis);
+        StablefordScore newInsert = stablefordScoringRepository.save(newScore);
         Optional<StablefordScore> actual = stablefordScoringRepository.findById(newInsert.getId());
 
         assertEquals(actual, Optional.of(newInsert));
+        assertEquals(Optional.of(actual.get().getHoleAnalysis().getPutt()), Optional.of(2));
     }
 
     @Test
     public void shouldUpdateScoreById() {
-        UUID id = UUID.randomUUID();
-        StablefordScore score = new StablefordScore(id, "271220221", "475", "5", "2", "5", "3", 190.00, "Hit", 2);
-        StablefordScore newInsert = stablefordScoringRepository.save(score);
+        newScore.setHoleAnalysis(newAnalysis);
+        StablefordScore newInsert = stablefordScoringRepository.save(newScore);
         Optional<StablefordScore> result = stablefordScoringRepository.findById(newInsert.getId());
-        result.get().setTeeOffLength(210.00);
-        result.get().setTeeOffDirection("Miss Hit");
+        result.get().setLength(String.valueOf(495));
+        result.get().setPar(String.valueOf(5));
 
         StablefordScore updatedScore = stablefordScoringRepository.save(result.get());
 
-        assertEquals(updatedScore.getTeeOffDirection(), "Miss Hit");
-        assertEquals(updatedScore.getTeeOffLength(), Double.valueOf(210.00));
+        assertEquals(updatedScore.getLength(), String.valueOf(495));
+        assertEquals(updatedScore.getPar(), String.valueOf(5));
+        assertEquals(updatedScore.getHoleAnalysis().getTeeOffDirection(), "Hit");
     }
 }

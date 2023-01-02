@@ -1,7 +1,7 @@
 package com.example.stablefordscoringservice.controller;
 
 import com.example.stablefordscoringservice.entity.StablefordScore;
-import com.example.stablefordscoringservice.service.StablefordScoringService;
+import com.example.stablefordscoringservice.service.stablefordscore.StablefordScoringService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -12,7 +12,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 

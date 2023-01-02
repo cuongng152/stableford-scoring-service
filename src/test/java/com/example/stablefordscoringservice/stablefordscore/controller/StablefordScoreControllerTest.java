@@ -2,7 +2,7 @@ package com.example.stablefordscoringservice.stablefordscore.controller;
 
 import com.example.stablefordscoringservice.controller.StablefordScoringController;
 import com.example.stablefordscoringservice.entity.StablefordScore;
-import com.example.stablefordscoringservice.service.StablefordScoringService;
+import com.example.stablefordscoringservice.service.stablefordscore.StablefordScoringService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,8 +36,8 @@ public class StablefordScoreControllerTest {
         UUID id = UUID.randomUUID();
         List<StablefordScore> listOfScoresReturned = new ArrayList<>(
                 Arrays.asList(
-                        new StablefordScore(id, "271220221", "475", "5", "2", "5", "3", 190.00, "Hit", 2),
-                        new StablefordScore(id, "271220221", "140", "3", "9", "4", "1", 200.00, "Left", 2)
+                        new StablefordScore(id, "271220221", "475", "5", "2", "5", "3"),
+                        new StablefordScore(id, "271220221", "140", "3", "9", "4", "1")
                 )
         );
 
@@ -51,7 +51,7 @@ public class StablefordScoreControllerTest {
     @Test
     void shouldAddNewStablefordScore() throws Exception {
         UUID id = UUID.randomUUID();
-        StablefordScore newScore = new StablefordScore(id, "271220221", "475", "5", "2", "5", "3", 190.00, "Hit", 2);
+        StablefordScore newScore = new StablefordScore(id, "271220221", "475", "5", "2", "5", "3");
         mockMvc.perform(post("/api/v1/stableford").contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(newScore)))
                 .andExpect(status().isCreated())
@@ -61,7 +61,7 @@ public class StablefordScoreControllerTest {
     @Test
     void shouldReturnStablefordScore() throws Exception {
         UUID id = UUID.randomUUID();
-        StablefordScore score = new StablefordScore(id, "271220221", "475", "5", "2", "5", "3", 190.00, "Hit", 2);
+        StablefordScore score = new StablefordScore(id, "271220221", "475", "5", "2", "5", "3");
         Optional<StablefordScore> result = Optional.of(score);
 
 
@@ -70,7 +70,7 @@ public class StablefordScoreControllerTest {
                 .andExpect(jsonPath("$.id").value(id.toString()))
                 .andExpect(jsonPath("$.code").value(score.getCode()))
                 .andExpect(jsonPath("$.length").value(score.getLength()))
-                .andExpect(jsonPath("$.teeOffLength").value(score.getTeeOffLength()))
+                .andExpect(jsonPath("$.par").value(score.getPar()))
                 .andDo(print());
     }
 
@@ -78,8 +78,8 @@ public class StablefordScoreControllerTest {
     void shouldUpdateScore() throws Exception {
         UUID id = UUID.randomUUID();
 
-        StablefordScore existingScore = new StablefordScore(id, "271220221", "475", "5", "2", "5", "3", 190.00, "Hit", 2);
-        StablefordScore newScore = new StablefordScore(id, "271220221", "475", "5", "2", "5", "3", 210.00, "Miss Hit", 3);
+        StablefordScore existingScore = new StablefordScore(id, "271220221", "475", "5", "2", "5", "3");
+        StablefordScore newScore = new StablefordScore(id, "271220221", "475", "5", "2", "5", "3");
 
         when(stablefordScoringService.getScoreById(id.toString())).thenReturn(Optional.of(existingScore));
         when(stablefordScoringService.updateScoreById(id.toString(), newScore)).thenReturn(newScore);
@@ -87,8 +87,8 @@ public class StablefordScoreControllerTest {
         mockMvc.perform(put("/api/v1/stableford/{id}", id).contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(newScore)))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.teeOffLength").value(newScore.getTeeOffLength()))
-                .andExpect(jsonPath("$.teeOffDirection").value(newScore.getTeeOffDirection()))
+                .andExpect(jsonPath("$.length").value(newScore.getLength()))
+                .andExpect(jsonPath("$.par").value(newScore.getPar()))
                 .andDo(print());
     }
 }

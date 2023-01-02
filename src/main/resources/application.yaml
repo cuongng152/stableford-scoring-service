@@ -16,11 +16,11 @@ spring:
         jwt:
           # Note the trailing slash is important!
           issuer-uri: https://connective-dev.au.auth0.com/
-  datasource:
-    driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
-    url: jdbc:sqlserver://10.70.0.8;databaseName=notes;trustServerCertificate=true
-    username: dev_user
-    password: 4nKi6Yc94kM9oU6ETVEqaO3
+#  datasource:
+#    driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
+#    url: jdbc:sqlserver://10.70.0.8;databaseName=notes;trustServerCertificate=true
+#    username: dev_user
+#    password: 4nKi6Yc94kM9oU6ETVEqaO3
   jpa:
     properties:
       hibernate:

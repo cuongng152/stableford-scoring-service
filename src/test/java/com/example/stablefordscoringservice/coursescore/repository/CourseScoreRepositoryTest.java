@@ -1,16 +1,11 @@
 package com.example.stablefordscoringservice.coursescore.repository;
 
 import com.example.stablefordscoringservice.entity.CourseScore;
-import com.example.stablefordscoringservice.entity.StablefordScore;
 import com.example.stablefordscoringservice.repository.CourseScoreRepository;
-import com.example.stablefordscoringservice.repository.StablefordScoringRepository;
-import org.junit.Test;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.test.context.junit4.SpringRunner;
 
 import java.sql.Timestamp;
 import java.time.Instant;
@@ -20,9 +15,9 @@ import java.util.Optional;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@RunWith(SpringRunner.class)
+//@RunWith(SpringRunner.class)
 @DataJpaTest
 public class CourseScoreRepositoryTest {
 

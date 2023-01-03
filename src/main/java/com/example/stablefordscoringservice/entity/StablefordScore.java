@@ -1,10 +1,9 @@
 package com.example.stablefordscoringservice.entity;
 
-import jakarta.persistence.*;
 import lombok.Data;
-import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.GenericGenerator;
 
+import javax.persistence.*;
 import java.util.UUID;
 
 @Entity

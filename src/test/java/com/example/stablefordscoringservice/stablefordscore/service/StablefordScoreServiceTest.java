@@ -69,7 +69,7 @@ public class StablefordScoreServiceTest {
         StablefordScore newScore = new StablefordScore(id, "271220221", "475", "5", "2", "5", "3");
         when(stablefordScoringRepository.save(newScore)).thenReturn(newScore);
         String code = stablefordScoringService.addScore(newScore);
-        assertEquals(code, newScore.getCode());
+        assertEquals(code, newScore.getHoleCode());
     }
 
     @DisplayName("JUnit test for find score by id")

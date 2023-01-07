@@ -44,7 +44,7 @@ public class StablefordScoreRepositoryTest {
         newScore.setHoleAnalysis(newAnalysis);
         stablefordScoringRepository.save(newScore);
         List<StablefordScore> scoreList = stablefordScoringRepository.findAll();
-        assertEquals(scoreList.get(0).getCode(), "271220221");
+        assertEquals(scoreList.get(0).getHoleCode(), "271220221");
         assertEquals(Optional.ofNullable(scoreList.get(0).getHoleAnalysis().getPutt()), Optional.of(2));
     }
 

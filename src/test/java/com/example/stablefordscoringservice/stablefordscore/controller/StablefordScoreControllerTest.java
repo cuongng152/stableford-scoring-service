@@ -68,7 +68,7 @@ public class StablefordScoreControllerTest {
         when(stablefordScoringService.getScoreById(id.toString())).thenReturn(result);
         mockMvc.perform(get("/api/v1/stableford/{id}", id)).andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(id.toString()))
-                .andExpect(jsonPath("$.code").value(score.getCode()))
+                .andExpect(jsonPath("$.holeCode").value(score.getHoleCode()))
                 .andExpect(jsonPath("$.length").value(score.getLength()))
                 .andExpect(jsonPath("$.par").value(score.getPar()))
                 .andDo(print());

@@ -18,12 +18,12 @@ public class StablefordScore {
             strategy = "org.hibernate.id.UUIDGenerator"
     )
     private UUID id;
-    private String code;
+    private String holeCode;
     private String length;
     private String par;
-    private String index;
+    private String holeIndex;
     private String stroke;
-    private String stablefordScore;
+    private String score;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "hole_analysis_id", referencedColumnName = "id")
@@ -32,14 +32,13 @@ public class StablefordScore {
     public StablefordScore() {
     }
 
-    public StablefordScore(UUID id, String code, String length, String par, String index, String stroke, String stablefordScore) {
-        super();
+    public StablefordScore(UUID id, String holeCode, String length, String par, String holeIndex, String stroke, String score) {
         this.id = id;
-        this.code = code;
+        this.holeCode = holeCode;
         this.length = length;
         this.par = par;
-        this.index = index;
+        this.holeIndex = holeIndex;
         this.stroke = stroke;
-        this.stablefordScore = stablefordScore;
+        this.score = score;
     }
 }

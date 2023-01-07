@@ -31,7 +31,7 @@ public class StablefordScoringImplementation implements StablefordScoringService
     public String addScore(StablefordScore score) {
         StablefordScore newScore;
         newScore = stablefordScoringRepository.save(score);
-        return newScore.getCode();
+        return newScore.getHoleCode();
     }
 
     @Override

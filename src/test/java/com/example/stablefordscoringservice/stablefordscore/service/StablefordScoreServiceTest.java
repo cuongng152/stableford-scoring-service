@@ -43,12 +43,14 @@ public class StablefordScoreServiceTest {
         MockitoAnnotations.initMocks(this);
     }
 
+    private static UUID id = UUID.randomUUID();
+    private static StablefordScore score =  new StablefordScore(id, "271220221", "475", "5", "2", "5", "3");
+
+    private static StablefordScore newScore = new StablefordScore(id, "271220221", "475", "5", "2", "5", "3");
+
     @DisplayName("JUnit test for returning list of stableford scores")
     @Test
     public void givenStablefordScoresList_whenGetAllStablefordScores_thenReturnStablefordScoreList() {
-        UUID id = UUID.randomUUID();
-        StablefordScore score =  new StablefordScore(id, "271220221", "475", "5", "2", "5", "3");
-
         /** given - precondition setup */
         when(stablefordScoringRepository.findAll()).thenReturn(Arrays.asList(score));
 
@@ -65,8 +67,6 @@ public class StablefordScoreServiceTest {
     @DisplayName("JUnit test for creating new stableford scores")
     @Test
     public void createNewStablefordScore() {
-        UUID id = UUID.randomUUID();
-        StablefordScore newScore = new StablefordScore(id, "271220221", "475", "5", "2", "5", "3");
         when(stablefordScoringRepository.save(newScore)).thenReturn(newScore);
         String code = stablefordScoringService.addScore(newScore);
         assertEquals(code, newScore.getHoleCode());
@@ -75,8 +75,6 @@ public class StablefordScoreServiceTest {
     @DisplayName("JUnit test for find score by id")
     @Test
     public void findScoreById() {
-        UUID id = UUID.randomUUID();
-        StablefordScore score = new StablefordScore(id, "271220221", "475", "5", "2", "5", "3");
         when(stablefordScoringRepository.findById(id)).thenReturn(Optional.of(score));
         Optional<StablefordScore> result = stablefordScoringService.getScoreById(id.toString());
         assertThat(result).isNotNull();
@@ -87,7 +85,6 @@ public class StablefordScoreServiceTest {
     @DisplayName("Throw an exception when data returns null")
     @Test
     public void throwExceptionWhenDataReturnsNull() {
-        UUID id = UUID.randomUUID();
         when(stablefordScoringRepository.findById(id)).thenReturn(null);
         assertThrows(NullScoreException.class, () -> {
             stablefordScoringService.getScoreById(id.toString());
@@ -107,9 +104,6 @@ public class StablefordScoreServiceTest {
     @DisplayName("JUnit test for update score by id")
     @Test
     public void updateScoreById() {
-        UUID id = UUID.randomUUID();
-        StablefordScore score = new StablefordScore(id, "271220221", "475", "5", "2", "5", "3");
-        StablefordScore newScore = new StablefordScore(id, "271220221", "475", "5", "2", "5", "3");
         when(stablefordScoringRepository.findById(id)).thenReturn(Optional.of(score));
         StablefordScore result = stablefordScoringService.updateScoreById(id.toString(), newScore);
         assertThat(result).isNotNull();
@@ -121,7 +115,6 @@ public class StablefordScoreServiceTest {
     @DisplayName("Throw an exception when data returns null when updating")
     @Test
     public void throwExceptionWhenDataReturnsNullInUpdating() {
-        UUID id = UUID.randomUUID();
         when(stablefordScoringRepository.findById(id)).thenReturn(null);
         assertThrows(NullScoreException.class, () -> {
             stablefordScoringService.updateScoreById(id.toString(), any(StablefordScore.class));

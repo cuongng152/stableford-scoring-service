@@ -13,11 +13,11 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.*;
 
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(StablefordScoringController.class)
 public class StablefordScoreControllerTest {
@@ -31,15 +31,15 @@ public class StablefordScoreControllerTest {
     @Autowired
     private ObjectMapper objectMapper;
 
+    private static UUID id = UUID.randomUUID();
+
+    private static StablefordScore score1 = new StablefordScore(id, "271220221", "475", "5", "2", "5", "3");
+
+    private static StablefordScore score2 = new StablefordScore(id, "271220221", "140", "3", "9", "4", "1");
+
     @Test
     void shouldReturnListOfStablefordScores() throws Exception {
-        UUID id = UUID.randomUUID();
-        List<StablefordScore> listOfScoresReturned = new ArrayList<>(
-                Arrays.asList(
-                        new StablefordScore(id, "271220221", "475", "5", "2", "5", "3"),
-                        new StablefordScore(id, "271220221", "140", "3", "9", "4", "1")
-                )
-        );
+        List<StablefordScore> listOfScoresReturned = new ArrayList<>(Arrays.asList(score1, score2));
 
         when(stablefordScoringService.getAllScores()).thenReturn(listOfScoresReturned);
         mockMvc.perform(get("/api/v1/stableford"))
@@ -50,45 +50,34 @@ public class StablefordScoreControllerTest {
 
     @Test
     void shouldAddNewStablefordScore() throws Exception {
-        UUID id = UUID.randomUUID();
-        StablefordScore newScore = new StablefordScore(id, "271220221", "475", "5", "2", "5", "3");
         mockMvc.perform(post("/api/v1/stableford").contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(newScore)))
+                        .content(objectMapper.writeValueAsString(score1)))
                 .andExpect(status().isCreated())
                 .andDo(print());
     }
 
     @Test
     void shouldReturnStablefordScore() throws Exception {
-        UUID id = UUID.randomUUID();
-        StablefordScore score = new StablefordScore(id, "271220221", "475", "5", "2", "5", "3");
-        Optional<StablefordScore> result = Optional.of(score);
-
-
+        Optional<StablefordScore> result = Optional.of(score1);
         when(stablefordScoringService.getScoreById(id.toString())).thenReturn(result);
         mockMvc.perform(get("/api/v1/stableford/{id}", id)).andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(id.toString()))
-                .andExpect(jsonPath("$.holeCode").value(score.getHoleCode()))
-                .andExpect(jsonPath("$.length").value(score.getLength()))
-                .andExpect(jsonPath("$.par").value(score.getPar()))
+                .andExpect(jsonPath("$.holeCode").value(score1.getHoleCode()))
+                .andExpect(jsonPath("$.length").value(score1.getLength()))
+                .andExpect(jsonPath("$.par").value(score1.getPar()))
                 .andDo(print());
     }
 
     @Test
     void shouldUpdateScore() throws Exception {
-        UUID id = UUID.randomUUID();
-
-        StablefordScore existingScore = new StablefordScore(id, "271220221", "475", "5", "2", "5", "3");
-        StablefordScore newScore = new StablefordScore(id, "271220221", "475", "5", "2", "5", "3");
-
-        when(stablefordScoringService.getScoreById(id.toString())).thenReturn(Optional.of(existingScore));
-        when(stablefordScoringService.updateScoreById(id.toString(), newScore)).thenReturn(newScore);
+        when(stablefordScoringService.getScoreById(id.toString())).thenReturn(Optional.of(score1));
+        when(stablefordScoringService.updateScoreById(id.toString(), score2)).thenReturn(score2);
 
         mockMvc.perform(put("/api/v1/stableford/{id}", id).contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(newScore)))
+                        .content(objectMapper.writeValueAsString(score2)))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.length").value(newScore.getLength()))
-                .andExpect(jsonPath("$.par").value(newScore.getPar()))
+                .andExpect(jsonPath("$.length").value(score2.getLength()))
+                .andExpect(jsonPath("$.par").value(score2.getPar()))
                 .andDo(print());
     }
 }

@@ -16,6 +16,7 @@ import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.when;
 
 //@RunWith(SpringRunner.class)
 @DataJpaTest
@@ -29,10 +30,12 @@ public class CourseScoreRepositoryTest {
     private Timestamp ts = Timestamp.from(Instant.parse(s));
     private CourseScore courseScore = new CourseScore(id, 90, "Waterford", ts, 20);
 
+    private CourseScore newInsert = courseScoreRepository.save(courseScore);
+
+    private CourseScore newCourseScore = courseScoreRepository.save(courseScore);
+
     @Test
     public void shouldFindAllScores() {
-        CourseScore newInsert = courseScoreRepository.save(courseScore);
-
         List<CourseScore> expected = Arrays.asList(newInsert);
 
         List<CourseScore> actual = Arrays.asList(courseScoreRepository.findAll().iterator().next());
@@ -44,7 +47,6 @@ public class CourseScoreRepositoryTest {
     @Test
     @Disabled
     public void shouldAddNewScore() {
-        CourseScore newCourseScore = courseScoreRepository.save(courseScore);
         List<CourseScore> scoreList = Arrays.asList(courseScoreRepository.findAll().iterator().next());
         assertEquals(scoreList.get(0), newCourseScore);
     }
@@ -60,7 +62,6 @@ public class CourseScoreRepositoryTest {
     @Test
     @Disabled
     public void shouldUpdateScoreById() {
-        CourseScore newInsert = courseScoreRepository.save(courseScore);
         Optional<CourseScore> result = courseScoreRepository.findById(newInsert.getId());
         result.get().setDailyHandicap(19);
         result.get().setStroke(93);

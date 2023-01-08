@@ -3,7 +3,9 @@ package com.example.stablefordscoringservice.coursescore.service;
 import com.example.stablefordscoringservice.StablefordScoringServiceApplication;
 import com.example.stablefordscoringservice.entity.CourseScore;
 import com.example.stablefordscoringservice.exceptions.CustomDataNotFoundException;
+import com.example.stablefordscoringservice.exceptions.DataExistException;
 import com.example.stablefordscoringservice.exceptions.NullScoreException;
+import com.example.stablefordscoringservice.exceptions.ServerErrorException;
 import com.example.stablefordscoringservice.repository.CourseScoreRepository;
 import com.example.stablefordscoringservice.service.coursescore.CourseScoreImplementation;
 import org.junit.jupiter.api.BeforeEach;
@@ -20,8 +22,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import javax.swing.text.html.Option;
 import java.sql.Timestamp;
 import java.time.Instant;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -100,10 +101,8 @@ public class CourseScoreServiceTest {
     }
 
     @DisplayName("Throw an exception when data not found")
-    @Disabled
     @Test
     public void throwExceptionWhenDataIsNotFound() {
-        when(repository.findAll()).thenReturn(null);
         assertThrows(CustomDataNotFoundException.class, () -> {
             service.getAllScores();
         });
@@ -126,6 +125,35 @@ public class CourseScoreServiceTest {
         when(repository.findById(id)).thenReturn(null);
         assertThrows(NullScoreException.class, () -> {
             service.updateScoreById(id.toString(), any(CourseScore.class));
+        });
+    }
+
+    @DisplayName("Throw an exception if unable to find course score by id in case repository failed")
+    @Test
+    public void throwExceptionIfDataNotFoundByIdAndRepositoryFailed() {
+        assertThrows(ServerErrorException.class, () -> {
+            service.getScoreById("1");
+        });
+    }
+
+    @DisplayName("Throw an exception if unable to find course score by id")
+    @Test
+    public void throwExceptionIfDataNotFoundById() {
+        when(repository.findById(id)).thenReturn(Optional.empty());
+        assertThrows(CustomDataNotFoundException.class, () -> {
+            service.getScoreById(String.valueOf(id));
+        });
+    }
+
+    @DisplayName("Throw an exception when data exist")
+    @Disabled
+    @Test
+    public void throwAnExceptionIfDataExist() {
+        when(repository.save(courseScore)).thenReturn(courseScore);
+        Optional<CourseScore> score = repository.findById(courseScore.getId());
+        System.out.println(score);
+        assertThrows(DataExistException.class, () -> {
+            service.addScore(courseScore);
         });
     }
 }

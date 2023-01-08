@@ -19,8 +19,6 @@ public class ErrorResponse {
 
     private String message;
 
-    private String stackTrace;
-
     public ErrorResponse() {
         timestamp = new Date();
     }
@@ -34,31 +32,5 @@ public class ErrorResponse {
         this.code = httpStatus.value();
         this.status = httpStatus.name();
         this.message = message;
-    }
-
-    public ErrorResponse(
-            HttpStatus httpStatus,
-            String message,
-            String stackTrace
-    ) {
-        this(
-                httpStatus,
-                message
-        );
-
-        this.stackTrace = stackTrace;
-    }
-
-    public ErrorResponse(
-            HttpStatus httpStatus,
-            String message,
-            String stackTrace,
-            Object data
-    ) {
-        this(
-                httpStatus,
-                message,
-                stackTrace
-        );
     }
 }

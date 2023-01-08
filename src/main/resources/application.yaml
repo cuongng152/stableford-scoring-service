@@ -17,7 +17,7 @@ spring:
           # Note the trailing slash is important!
           issuer-uri: https://connective-dev.au.auth0.com/
   datasource:
-    url: jdbc:mysql://localhost:3306/polaris?useSSL=false
+    url: jdbc:mysql://localhost:3306/polaris?useSSL=false&allowPublicKeyRetrieval=true
     username: root
     password: root
   jpa:

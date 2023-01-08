@@ -33,7 +33,7 @@ public class CourseScoreController {
 
     @GetMapping
     /** Add security here*/
-    public @ResponseBody List<CourseScore> getStablefordScores() {
+    public @ResponseBody List<CourseScore> getCourseScore() {
         List<CourseScore> response;
         response = courseScoringService.getAllScores();
         return response;

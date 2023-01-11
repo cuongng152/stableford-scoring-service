@@ -9,6 +9,7 @@ import com.example.stablefordscoringservice.repository.CourseScoreRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.util.Streamable;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -24,10 +25,12 @@ public class CourseScoreImplementation implements CourseScoringService {
     @Override
     public List<CourseScore> getAllScores() {
         Iterable<CourseScore> result = courseScoreRepository.findAll();
+        List<CourseScore> retList = new ArrayList<>();
         if (((ArrayList) result).size() == 0 ) {
             throw new CustomDataNotFoundException("No course scores data found. Please contact us for more details.");
         }
-        return Arrays.asList(result.iterator().next());
+        retList = Streamable.of(result).toList();
+        return retList;
     }
 
     @Override

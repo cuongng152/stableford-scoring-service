@@ -12,7 +12,7 @@ import java.util.UUID;
 public class CourseScore {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+//    @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
     @Column(name = "stroke", nullable = false)

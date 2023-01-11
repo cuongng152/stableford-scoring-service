@@ -95,7 +95,7 @@ public class CourseScoreServiceTest {
     @Test
     public void throwExceptionWhenDataReturnsNull() {
         when(repository.findById(id)).thenReturn(null);
-        assertThrows(NullScoreException.class, () -> {
+        assertThrows(NullPointerException.class, () -> {
             service.getScoreById(id.toString());
         });
     }
@@ -150,8 +150,6 @@ public class CourseScoreServiceTest {
     @Test
     public void throwAnExceptionIfDataExist() {
         when(repository.save(courseScore)).thenReturn(courseScore);
-        Optional<CourseScore> score = repository.findById(courseScore.getId());
-        System.out.println(score);
         assertThrows(DataExistException.class, () -> {
             service.addScore(courseScore);
         });

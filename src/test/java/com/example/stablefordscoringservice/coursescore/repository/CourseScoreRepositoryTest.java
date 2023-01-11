@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.data.util.Streamable;
 
 import java.sql.Timestamp;
 import java.time.Instant;
@@ -30,13 +31,12 @@ public class CourseScoreRepositoryTest {
     private Timestamp ts = Timestamp.from(Instant.parse(s));
     private CourseScore courseScore = new CourseScore(id, 90, "Waterford", ts, 20);
 
-    private CourseScore newInsert = courseScoreRepository.save(courseScore);
-
-    private CourseScore newCourseScore = courseScoreRepository.save(courseScore);
+//    private CourseScore newCourseScore = courseScoreRepository.save(courseScore);
 
     @Test
     public void shouldFindAllScores() {
-        List<CourseScore> expected = Arrays.asList(newInsert);
+        courseScoreRepository.save(courseScore);
+        List<CourseScore> expected = Arrays.asList(courseScore);
 
         List<CourseScore> actual = Arrays.asList(courseScoreRepository.findAll().iterator().next());
 
@@ -45,10 +45,10 @@ public class CourseScoreRepositoryTest {
     }
 
     @Test
-    @Disabled
     public void shouldAddNewScore() {
-        List<CourseScore> scoreList = Arrays.asList(courseScoreRepository.findAll().iterator().next());
-        assertEquals(scoreList.get(0), newCourseScore);
+        courseScoreRepository.save(courseScore);
+        List<CourseScore> scoreList = Streamable.of(courseScoreRepository.findAll()).toList();
+        assertEquals(scoreList.get(0), courseScore);
     }
 
     @Test
@@ -60,9 +60,9 @@ public class CourseScoreRepositoryTest {
     }
 
     @Test
-    @Disabled
     public void shouldUpdateScoreById() {
-        Optional<CourseScore> result = courseScoreRepository.findById(newInsert.getId());
+        courseScoreRepository.save(courseScore);
+        Optional<CourseScore> result = courseScoreRepository.findById(courseScore.getId());
         result.get().setDailyHandicap(19);
         result.get().setStroke(93);
 

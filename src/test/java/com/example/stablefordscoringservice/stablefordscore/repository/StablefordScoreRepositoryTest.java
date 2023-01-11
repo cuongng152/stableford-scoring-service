@@ -22,6 +22,8 @@ public class StablefordScoreRepositoryTest {
     @Autowired
     private StablefordScoringRepository stablefordScoringRepository;
     UUID id = UUID.randomUUID();
+
+    UUID id2 = UUID.randomUUID();
     private StablefordScore newScore = new StablefordScore(id, "271220221", "475", "5", "2", "5", "3");
     private HoleAnalysis newAnalysis = new HoleAnalysis(210.00, "Hit", 2);
 

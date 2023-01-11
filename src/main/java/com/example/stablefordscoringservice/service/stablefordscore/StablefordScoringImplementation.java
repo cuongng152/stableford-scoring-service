@@ -3,6 +3,7 @@ package com.example.stablefordscoringservice.service.stablefordscore;
 import com.example.stablefordscoringservice.entity.StablefordScore;
 import com.example.stablefordscoringservice.exceptions.CustomDataNotFoundException;
 import com.example.stablefordscoringservice.exceptions.NullScoreException;
+import com.example.stablefordscoringservice.exceptions.ServerErrorException;
 import com.example.stablefordscoringservice.repository.StablefordScoringRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,8 +22,11 @@ public class StablefordScoringImplementation implements StablefordScoringService
         List<StablefordScore> result;
         try {
             result = stablefordScoringRepository.findAll();
+            if (result.isEmpty()) {
+                throw new CustomDataNotFoundException("No course scores data found. Please contact us for more details.");
+            }
         } catch (Exception e) {
-            throw new CustomDataNotFoundException(e.getMessage());
+            throw new ServerErrorException(e.getMessage());
         }
         return result;
     }

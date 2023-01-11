@@ -10,7 +10,7 @@ import java.util.UUID;
 @Data
 public class HoleAnalysis {
     @Id
-//    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
     private Double teeOffLength;

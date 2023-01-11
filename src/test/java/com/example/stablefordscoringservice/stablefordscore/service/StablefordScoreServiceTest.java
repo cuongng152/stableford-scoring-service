@@ -4,6 +4,7 @@ import com.example.stablefordscoringservice.StablefordScoringServiceApplication;
 import com.example.stablefordscoringservice.entity.StablefordScore;
 import com.example.stablefordscoringservice.exceptions.CustomDataNotFoundException;
 import com.example.stablefordscoringservice.exceptions.NullScoreException;
+import com.example.stablefordscoringservice.exceptions.ServerErrorException;
 import com.example.stablefordscoringservice.repository.StablefordScoringRepository;
 import com.example.stablefordscoringservice.service.stablefordscore.StablefordScoringImplementation;
 import org.junit.jupiter.api.BeforeEach;
@@ -92,11 +93,19 @@ public class StablefordScoreServiceTest {
     }
 
     @DisplayName("Throw an exception when data not found")
-    @Disabled
     @Test
     public void throwExceptionWhenDataIsNotFound() {
         when(stablefordScoringRepository.findAll()).thenReturn(null);
-        assertThrows(CustomDataNotFoundException.class, () -> {
+        assertThrows(ServerErrorException.class, () -> {
+            stablefordScoringService.getAllScores();
+        });
+    }
+
+    @DisplayName("Throw an exception when data is empty")
+    @Test
+    public void throwExceptionWhenDataIsEmpty() {
+        when(stablefordScoringRepository.findAll()).thenReturn(Arrays.asList());
+        assertThrows(ServerErrorException.class, () -> {
             stablefordScoringService.getAllScores();
         });
     }

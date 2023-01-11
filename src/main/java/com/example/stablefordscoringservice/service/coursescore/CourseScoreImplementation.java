@@ -26,7 +26,7 @@ public class CourseScoreImplementation implements CourseScoringService {
     public List<CourseScore> getAllScores() {
         Iterable<CourseScore> result = courseScoreRepository.findAll();
         List<CourseScore> retList = new ArrayList<>();
-        if (((ArrayList) result).size() == 0 ) {
+        if (((ArrayList) result).isEmpty() ) {
             throw new CustomDataNotFoundException("No course scores data found. Please contact us for more details.");
         }
         retList = Streamable.of(result).toList();

@@ -36,9 +36,9 @@ public class CourseScoreControllerTest {
     private UUID id = UUID.randomUUID();
     private String s = "2019-10-11T12:12:23.234Z";
     private Timestamp ts = Timestamp.from(Instant.parse(s));
-    private CourseScore courseScore = new CourseScore(id, 90, "Waterford", ts, 20);
+    private CourseScore courseScore = new CourseScore(90, "Waterford", ts, 20);
 
-    private CourseScore newScore = new CourseScore(id, 93, "Waterford", ts, 19);
+    private CourseScore newScore = new CourseScore(93, "Waterford", ts, 19);
 
     @Test
     void shouldReturnListOfCourseScores() throws Exception {
@@ -61,7 +61,6 @@ public class CourseScoreControllerTest {
     void shouldReturnCourseScore() throws Exception {
         when(service.getScoreById(id.toString())).thenReturn(Optional.of(courseScore));
         mockMvc.perform(get("/api/v1/course/{id}", id)).andExpect(status().isOk())
-                .andExpect(jsonPath("$.id").value(id.toString()))
                 .andExpect(jsonPath("$.courseName").value(courseScore.getCourseName()))
                 .andExpect(jsonPath("$.stroke").value(courseScore.getStroke()))
                 .andExpect(jsonPath("$.dailyHandicap").value(courseScore.getDailyHandicap()))

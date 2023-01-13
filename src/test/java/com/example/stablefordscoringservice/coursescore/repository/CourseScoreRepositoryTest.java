@@ -29,12 +29,13 @@ public class CourseScoreRepositoryTest {
     private UUID id = UUID.randomUUID();
     private String s = "2019-10-11T12:12:23.234Z";
     private Timestamp ts = Timestamp.from(Instant.parse(s));
-    private CourseScore courseScore = new CourseScore(id, 90, "Waterford", ts, 20);
+    private CourseScore courseScore = new CourseScore(90, "Waterford", ts, 20);
 
 //    private CourseScore newCourseScore = courseScoreRepository.save(courseScore);
 
     @Test
     public void shouldFindAllScores() {
+        courseScore.setId(String.valueOf(id));
         courseScoreRepository.save(courseScore);
         List<CourseScore> expected = Arrays.asList(courseScore);
 
@@ -46,6 +47,7 @@ public class CourseScoreRepositoryTest {
 
     @Test
     public void shouldAddNewScore() {
+        courseScore.setId(String.valueOf(id));
         courseScoreRepository.save(courseScore);
         List<CourseScore> scoreList = Streamable.of(courseScoreRepository.findAll()).toList();
         assertEquals(scoreList.get(0), courseScore);
@@ -53,6 +55,7 @@ public class CourseScoreRepositoryTest {
 
     @Test
     public void shouldGetScoreById() {
+        courseScore.setId(String.valueOf(id));
         CourseScore newInsert = courseScoreRepository.save(courseScore);
         Optional<CourseScore> actual = courseScoreRepository.findById(newInsert.getId());
 
@@ -61,6 +64,7 @@ public class CourseScoreRepositoryTest {
 
     @Test
     public void shouldUpdateScoreById() {
+        courseScore.setId(String.valueOf(id));
         courseScoreRepository.save(courseScore);
         Optional<CourseScore> result = courseScoreRepository.findById(courseScore.getId());
         result.get().setDailyHandicap(19);

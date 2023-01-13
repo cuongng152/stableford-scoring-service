@@ -36,21 +36,22 @@ public class CourseScoreImplementation implements CourseScoringService {
     @Override
     public String addScore(CourseScore score) {
         CourseScore result;
-        Optional<CourseScore> existingScore = courseScoreRepository.findById(score.getId());
-        if (existingScore.isPresent()) {
-            logger.trace("Score with ID: " + score.getId() + "is already exist.");
-            throw new DataExistException("Score with ID: " + score.getId() + "is already exist.");
-        } else {
+//        Optional<CourseScore> existingScore = courseScoreRepository.findById(score.getId());
+//        if (existingScore.isPresent()) {
+//            logger.trace("Score with ID: " + score.getId() + "is already exist.");
+//            throw new DataExistException("Score with ID: " + score.getId() + "is already exist.");
+//        } else {
+            score.setId(UUID.randomUUID().toString());
              result = courseScoreRepository.save(score);
-        }
-        return result.getId().toString();
+//        }
+        return result.getId();
     }
 
     @Override
     public Optional<CourseScore> getScoreById(String id) {
         Optional<CourseScore> result;
         try {
-            Optional<CourseScore> score = courseScoreRepository.findById(UUID.fromString(id));
+            Optional<CourseScore> score = courseScoreRepository.findById(id);
             if (score.isPresent()) {
                 result = score;
             } else {
@@ -65,14 +66,16 @@ public class CourseScoreImplementation implements CourseScoringService {
 
     @Override
     public CourseScore updateScoreById(String id, CourseScore updatedScore) {
-        Optional<CourseScore> score = courseScoreRepository.findById(UUID.fromString(id));
+        Optional<CourseScore> score = courseScoreRepository.findById(id);
+        CourseScore update = null;
+        updatedScore.setId(id);
         try {
             if (score.isPresent()) {
-                courseScoreRepository.save(updatedScore);
+                update = courseScoreRepository.save(updatedScore);
             }
         } catch (NullPointerException e) {
             throw new NullScoreException(e.getMessage());
         }
-        return updatedScore;
+        return update;
     }
 }

@@ -13,7 +13,7 @@ public class CourseScore {
 
     @Id
 //    @GeneratedValue(strategy = GenerationType.AUTO)
-    private UUID id;
+    private String id;
 
     @Column(name = "stroke", nullable = false)
     private Integer stroke;
@@ -30,8 +30,7 @@ public class CourseScore {
     public CourseScore() {
     }
 
-    public CourseScore(UUID id, Integer stroke, String courseName, Timestamp dateOfPlay, Integer dailyHandicap) {
-        this.id = id;
+    public CourseScore(Integer stroke, String courseName, Timestamp dateOfPlay, Integer dailyHandicap) {
         this.stroke = stroke;
         this.courseName = courseName;
         this.dateOfPlay = dateOfPlay;

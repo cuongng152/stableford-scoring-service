@@ -6,5 +6,5 @@ import org.springframework.stereotype.Repository;
 
 import java.util.UUID;
 @Repository
-public interface CourseScoreRepository extends CrudRepository<CourseScore, UUID> {
+public interface CourseScoreRepository extends CrudRepository<CourseScore, String> {
 }

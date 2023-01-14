@@ -2,7 +2,6 @@ package com.example.stablefordscoringservice.service.coursescore;
 
 import com.example.stablefordscoringservice.entity.CourseScore;
 import com.example.stablefordscoringservice.exceptions.CustomDataNotFoundException;
-import com.example.stablefordscoringservice.exceptions.DataExistException;
 import com.example.stablefordscoringservice.exceptions.NullScoreException;
 import com.example.stablefordscoringservice.exceptions.ServerErrorException;
 import com.example.stablefordscoringservice.repository.CourseScoreRepository;
@@ -12,7 +11,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.util.Streamable;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class CourseScoreImplementation implements CourseScoringService {
@@ -25,8 +27,8 @@ public class CourseScoreImplementation implements CourseScoringService {
     @Override
     public List<CourseScore> getAllScores() {
         Iterable<CourseScore> result = courseScoreRepository.findAll();
-        List<CourseScore> retList = new ArrayList<>();
-        if (((ArrayList) result).isEmpty() ) {
+        List<CourseScore> retList;
+        if (((ArrayList) result).isEmpty()) {
             throw new CustomDataNotFoundException("No course scores data found. Please contact us for more details.");
         }
         retList = Streamable.of(result).toList();
@@ -36,14 +38,8 @@ public class CourseScoreImplementation implements CourseScoringService {
     @Override
     public String addScore(CourseScore score) {
         CourseScore result;
-//        Optional<CourseScore> existingScore = courseScoreRepository.findById(score.getId());
-//        if (existingScore.isPresent()) {
-//            logger.trace("Score with ID: " + score.getId() + "is already exist.");
-//            throw new DataExistException("Score with ID: " + score.getId() + "is already exist.");
-//        } else {
-            score.setId(UUID.randomUUID().toString());
-             result = courseScoreRepository.save(score);
-//        }
+        score.setId(UUID.randomUUID().toString());
+        result = courseScoreRepository.save(score);
         return result.getId();
     }
 
@@ -66,14 +62,17 @@ public class CourseScoreImplementation implements CourseScoringService {
 
     @Override
     public CourseScore updateScoreById(String id, CourseScore updatedScore) {
-        Optional<CourseScore> score = courseScoreRepository.findById(id);
-        CourseScore update = null;
+        Optional<CourseScore> score;
+        CourseScore update;
         updatedScore.setId(id);
         try {
+            score = courseScoreRepository.findById(id);
             if (score.isPresent()) {
                 update = courseScoreRepository.save(updatedScore);
+            } else {
+                throw new CustomDataNotFoundException("Unable to find a course score by ID: " + id + ". Please contact us for more details.");
             }
-        } catch (NullPointerException e) {
+        } catch (ServerErrorException e) {
             throw new NullScoreException(e.getMessage());
         }
         return update;

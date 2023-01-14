@@ -3,9 +3,6 @@ package com.example.stablefordscoringservice.coursescore.service;
 import com.example.stablefordscoringservice.StablefordScoringServiceApplication;
 import com.example.stablefordscoringservice.entity.CourseScore;
 import com.example.stablefordscoringservice.exceptions.CustomDataNotFoundException;
-import com.example.stablefordscoringservice.exceptions.DataExistException;
-import com.example.stablefordscoringservice.exceptions.NullScoreException;
-import com.example.stablefordscoringservice.exceptions.ServerErrorException;
 import com.example.stablefordscoringservice.repository.CourseScoreRepository;
 import com.example.stablefordscoringservice.service.coursescore.CourseScoreImplementation;
 import org.junit.jupiter.api.BeforeEach;
@@ -19,15 +16,15 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import javax.swing.text.html.Option;
 import java.sql.Timestamp;
 import java.time.Instant;
-import java.util.*;
+import java.util.Optional;
+import java.util.UUID;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
-import static org.assertj.core.api.Assertions.assertThat;
 
 
 /**
@@ -53,25 +50,6 @@ public class CourseScoreServiceTest {
     private CourseScore courseScore = new CourseScore(90, "Waterford", ts, 20);
 
     private CourseScore newScore = new CourseScore(93, "Waterford", ts, 19);
-
-//    @DisplayName("JUnit test for returning list of stableford scores")
-//    @Test
-//    public void givenStablefordScoresList_whenGetAllStablefordScores_thenReturnStablefordScoreList() {
-//        UUID id = UUID.randomUUID();
-//        StablefordScore score = new StablefordScore(id, "271220221", "475", "5", "2", "5", "3", 190.00, "Hit", 2);
-//
-//        /** given - precondition setup */
-//        when(stablefordScoringRepository.findAll()).thenReturn(Arrays.asList(score));
-//
-//        /** when - action or the behavior that we are going to test */
-//        List<StablefordScore> expectedResults = stablefordScoringService.getAllScores();
-//
-//        /** then - verify the expected vs actual */
-//        assertThat(expectedResults).isNotNull();
-//        assertThat(expectedResults.size()).isEqualTo(1);
-//        assertEquals(Arrays.asList(score), expectedResults);
-//        verify(stablefordScoringRepository, times(1)).findAll();
-//    }
 
     @DisplayName("JUnit test for creating new course scores")
     @Test
@@ -112,6 +90,7 @@ public class CourseScoreServiceTest {
     @Test
     @Disabled
     public void updateScoreById() {
+        courseScore.setId(String.valueOf(id));
         when(repository.findById(String.valueOf(id))).thenReturn(Optional.of(courseScore));
         CourseScore result = service.updateScoreById(id.toString(), newScore);
         System.out.println(result);
@@ -123,11 +102,10 @@ public class CourseScoreServiceTest {
 
     @DisplayName("Throw an exception when data returns null when updating")
     @Test
-    @Disabled
     public void throwExceptionWhenDataReturnsNullInUpdating() {
-        when(repository.findById(String.valueOf(id))).thenReturn(null);
-        assertThrows(NullScoreException.class, () -> {
-            service.updateScoreById(id.toString(), any(CourseScore.class));
+        when(repository.findById(String.valueOf(id))).thenReturn(Optional.empty());
+        assertThrows(CustomDataNotFoundException.class, () -> {
+            service.updateScoreById(id.toString(), courseScore);
         });
     }
 

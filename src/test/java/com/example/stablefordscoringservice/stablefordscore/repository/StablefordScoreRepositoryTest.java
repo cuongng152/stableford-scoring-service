@@ -24,11 +24,13 @@ public class StablefordScoreRepositoryTest {
     UUID id = UUID.randomUUID();
 
     UUID id2 = UUID.randomUUID();
-    private StablefordScore newScore = new StablefordScore(id, "271220221", "475", "5", "2", "5", "3");
-    private HoleAnalysis newAnalysis = new HoleAnalysis(210.00, "Hit", 2);
+    private final StablefordScore newScore = new StablefordScore("271220221", "475", 5, 2, 5, 3);
+    private final HoleAnalysis newAnalysis = new HoleAnalysis(210.00, "Hit", 2);
 
     @Test
     public void shouldFindAllScores() {
+        newScore.setId(String.valueOf(id));
+        newAnalysis.setId(String.valueOf(id2));
         newScore.setHoleAnalysis(newAnalysis);
         StablefordScore newInsert = stablefordScoringRepository.save(newScore);
 
@@ -43,6 +45,8 @@ public class StablefordScoreRepositoryTest {
 
     @Test
     public void shouldAddNewScore() {
+        newScore.setId(String.valueOf(id));
+        newAnalysis.setId(String.valueOf(id2));
         newScore.setHoleAnalysis(newAnalysis);
         stablefordScoringRepository.save(newScore);
         List<StablefordScore> scoreList = stablefordScoringRepository.findAll();
@@ -52,6 +56,8 @@ public class StablefordScoreRepositoryTest {
 
     @Test
     public void shouldGetScoreById() {
+        newScore.setId(String.valueOf(id));
+        newAnalysis.setId(String.valueOf(id2));
         newScore.setHoleAnalysis(newAnalysis);
         StablefordScore newInsert = stablefordScoringRepository.save(newScore);
         Optional<StablefordScore> actual = stablefordScoringRepository.findById(newInsert.getId());
@@ -62,16 +68,18 @@ public class StablefordScoreRepositoryTest {
 
     @Test
     public void shouldUpdateScoreById() {
+        newScore.setId(String.valueOf(id));
+        newAnalysis.setId(String.valueOf(id2));
         newScore.setHoleAnalysis(newAnalysis);
         StablefordScore newInsert = stablefordScoringRepository.save(newScore);
         Optional<StablefordScore> result = stablefordScoringRepository.findById(newInsert.getId());
         result.get().setLength(String.valueOf(495));
-        result.get().setPar(String.valueOf(5));
+        result.get().setPar(Integer.valueOf(String.valueOf(5)));
 
         StablefordScore updatedScore = stablefordScoringRepository.save(result.get());
 
         assertEquals(updatedScore.getLength(), String.valueOf(495));
-        assertEquals(updatedScore.getPar(), String.valueOf(5));
+        assertEquals(updatedScore.getPar(), 5);
         assertEquals(updatedScore.getHoleAnalysis().getTeeOffDirection(), "Hit");
     }
 }

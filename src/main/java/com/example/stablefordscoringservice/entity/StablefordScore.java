@@ -1,39 +1,32 @@
 package com.example.stablefordscoringservice.entity;
 
 import lombok.Data;
-import org.hibernate.annotations.GenericGenerator;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.UUID;
+import javax.transaction.Transactional;
 
 @Entity
 @Table(name = "stableford_score")
 @Data
+@Transactional
+@NoArgsConstructor
 public class StablefordScore {
 
     @Id
-//    @GeneratedValue(generator = "UUID")
-    @GenericGenerator(
-            name = "UUID",
-            strategy = "org.hibernate.id.UUIDGenerator"
-    )
-    private UUID id;
+    private String id;
     private String holeCode;
     private String length;
-    private String par;
-    private String holeIndex;
-    private String stroke;
-    private String score;
+    private Integer par;
+    private Integer holeIndex;
+    private Integer stroke;
+    private Integer score;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "hole_analysis_id", referencedColumnName = "id")
     private HoleAnalysis holeAnalysis;
 
-    public StablefordScore() {
-    }
-
-    public StablefordScore(UUID id, String holeCode, String length, String par, String holeIndex, String stroke, String score) {
-        this.id = id;
+    public StablefordScore(String holeCode, String length, Integer par, Integer holeIndex, Integer stroke, Integer score) {
         this.holeCode = holeCode;
         this.length = length;
         this.par = par;

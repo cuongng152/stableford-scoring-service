@@ -33,9 +33,9 @@ public class StablefordScoreControllerTest {
 
     private static UUID id = UUID.randomUUID();
 
-    private static StablefordScore score1 = new StablefordScore(id, "271220221", "475", "5", "2", "5", "3");
+    private static StablefordScore score1 = new StablefordScore("271220221", "475", 5, 2, 5, 3);
 
-    private static StablefordScore score2 = new StablefordScore(id, "271220221", "140", "3", "9", "4", "1");
+    private static StablefordScore score2 = new StablefordScore("271220221", "140", 3, 9, 4, 1);
 
     @Test
     void shouldReturnListOfStablefordScores() throws Exception {
@@ -59,6 +59,7 @@ public class StablefordScoreControllerTest {
     @Test
     void shouldReturnStablefordScore() throws Exception {
         Optional<StablefordScore> result = Optional.of(score1);
+        score1.setId(String.valueOf(id));
         when(stablefordScoringService.getScoreById(id.toString())).thenReturn(result);
         mockMvc.perform(get("/api/v1/stableford/{id}", id)).andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(id.toString()))

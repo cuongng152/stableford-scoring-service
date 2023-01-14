@@ -25,7 +25,7 @@ public class StablefordScoringImplementation implements StablefordScoringService
             if (result.isEmpty()) {
                 throw new CustomDataNotFoundException("No course scores data found. Please contact us for more details.");
             }
-        } catch (Exception e) {
+        } catch (ServerErrorException e) {
             throw new ServerErrorException(e.getMessage());
         }
         return result;
@@ -34,17 +34,26 @@ public class StablefordScoringImplementation implements StablefordScoringService
     @Override
     public String addScore(StablefordScore score) {
         StablefordScore newScore;
-        newScore = stablefordScoringRepository.save(score);
-        return newScore.getHoleCode();
+        score.setId(String.valueOf(UUID.randomUUID()));
+        score.getHoleAnalysis().setId(String.valueOf(UUID.randomUUID()));
+        try {
+            newScore = stablefordScoringRepository.save(score);
+        } catch (Exception e) {
+            throw new ServerErrorException(e.getMessage());
+        }
+        return newScore.getId();
     }
 
     @Override
     public Optional<StablefordScore> getScoreById(String id) {
-        Optional<StablefordScore> result = Optional.empty();
-        Optional<StablefordScore> score = stablefordScoringRepository.findById(UUID.fromString(id));
+        Optional<StablefordScore> result;
+        Optional<StablefordScore> score;
         try {
+            score = stablefordScoringRepository.findById(id);
             if (score.isPresent()) {
                 result = score;
+            } else {
+                throw new CustomDataNotFoundException("Unable to find a course score by ID: " + id + ". Please contact us for more details.");
             }
         } catch (NullPointerException e) {
             throw new NullScoreException(e.getMessage());
@@ -55,13 +64,18 @@ public class StablefordScoringImplementation implements StablefordScoringService
 
     @Override
     public StablefordScore updateScoreById(String id, StablefordScore updatedScore) {
-        Optional<StablefordScore> score = stablefordScoringRepository.findById(UUID.fromString(id));
+        Optional<StablefordScore> score;
         try {
+            score = stablefordScoringRepository.findById(id);
             if (score.isPresent()) {
-                stablefordScoringRepository.save(updatedScore);
+                updatedScore.setId(id);
+                updatedScore.getHoleAnalysis().setId(score.get().getHoleAnalysis().getId());
+                stablefordScoringRepository.saveAndFlush(updatedScore);
+            } else {
+                throw new CustomDataNotFoundException("Unable to find a course score by ID: " + id + ". Please contact us for more details.");
             }
-        } catch (NullPointerException e) {
-            throw new NullScoreException(e.getMessage());
+        } catch (ServerErrorException e) {
+            throw new ServerErrorException(e.getMessage());
         }
         return updatedScore;
     }

@@ -1,28 +1,24 @@
 package com.example.stablefordscoringservice.entity;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
-import java.util.UUID;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.transaction.Transactional;
 
 @Entity
 @Table(name = "hole_analysis")
 @Data
+@Transactional
+@NoArgsConstructor
 public class HoleAnalysis {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private UUID id;
-
+    private String id;
     private Double teeOffLength;
     private String teeOffDirection;
     private Integer putt;
-
-    @OneToOne
-    @JoinColumn(name = "HoleAnalysis")
-    private StablefordScore stablefordScore;
-
-    public HoleAnalysis() {
-    }
 
     public HoleAnalysis(Double teeOffLength, String teeOffDirection, Integer putt) {
         this.teeOffLength = teeOffLength;

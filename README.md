@@ -32,3 +32,7 @@ For further reference, please find it below
 * Check the logs `docker logs -f <CONTAINER_ID>`
 
 * Stop the server `docker stop <CONTAINER_ID>`
+
+# Solution 2 - Using Docker-Compose
+### Run the command `docker-compose up`
+### The rest of checking is similar to what we have when we are using docker-network

@@ -1,0 +1,25 @@
+version: "1"
+services:
+  mysqldb:
+    image: mysql:5.7
+    networks:
+      - stableford-score-network
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=polaris
+      - MYSQL_USER=sys
+      - MYSQL_PASSWORD=1234
+
+  server:
+    image: stableford-service
+    ports:
+      - "8089:8089"
+    environment:
+      - spring.datasource.url=jdbc:mysql://mysqldb:3306/polaris?useSSL=false&allowPublicKeyRetrieval=true
+    networks:
+      - stableford-score-network
+    depends_on:
+      - mysqldb
+
+networks:
+  stableford-score-network:

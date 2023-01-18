@@ -33,15 +33,20 @@ public class CourseScore {
     @Column(name = "stableford_score", nullable = false)
     private Integer stablefordScore;
 
+    @Column(name = "hole_code", nullable = false)
+    private String holeCode;
+
     public CourseScore() {
     }
 
-    public CourseScore(Integer stroke, String courseName, Timestamp dateOfPlay, Integer dailyHandicap, Double avgDriverDistance, Integer stablefordScore) {
+    public CourseScore(Integer stroke, String courseName, Timestamp dateOfPlay, Integer dailyHandicap,
+                       Double avgDriverDistance, Integer stablefordScore, String holeCode) {
         this.stroke = stroke;
         this.courseName = courseName;
         this.dateOfPlay = dateOfPlay;
         this.dailyHandicap = dailyHandicap;
         this.avgDriverDistance = avgDriverDistance;
         this.stablefordScore = stablefordScore;
+        this.holeCode = holeCode;
     }
 }

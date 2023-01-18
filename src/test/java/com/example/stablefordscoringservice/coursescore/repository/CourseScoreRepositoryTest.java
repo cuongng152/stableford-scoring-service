@@ -29,9 +29,7 @@ public class CourseScoreRepositoryTest {
     private UUID id = UUID.randomUUID();
     private String s = "2019-10-11T12:12:23.234Z";
     private Timestamp ts = Timestamp.from(Instant.parse(s));
-    private CourseScore courseScore = new CourseScore(90, "Waterford", ts, 20,189.6, 37);
-
-//    private CourseScore newCourseScore = courseScoreRepository.save(courseScore);
+    private CourseScore courseScore = new CourseScore(90, "Waterford", ts, 20,189.6, 37, "19012022Morning");
 
     @Test
     public void shouldFindAllScores() {

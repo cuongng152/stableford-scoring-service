@@ -19,16 +19,16 @@ For further reference, please find it below
 # Solution 1 - Using Docker Network
 ### Step 1 - Create Mysql image and run
 * Pull the mysql image: `docker pull mysql:5.7`
-* Create network: `docker network create NETWORK_NAME`
-* Run the mysql image: `docker run -it --name mysqldb --network=NETWORK_NAME -e MYSQL_ROOT_PASSWORD=root -e MYSQL_DATABASE=polaris -e MYSQL_USER=sys -e MYSQL_PASSWORD=1234 -d mysql:5.7`
+* Create network: `docker network create stableford-score-network`
+* Run the mysql image: `docker run -it --name mysqldb --network=stableford-score-network -e MYSQL_ROOT_PASSWORD=root -e MYSQL_DATABASE=polaris -e MYSQL_USER=sys -e MYSQL_PASSWORD=1234 -d mysql:5.7`
 * Verify the db image `docker exec -it <container_id> bash`
 * Working with DB `mysql -usys -p1234`
 * Working with DB `show databases;`
 * Working with DB `use DATABASE_NAME;`
 
 ### Step 2 - Create service image and run
-* Build the image `docker build -t SERVICE_IMAGE_NAME .`
-* Run the service in our network `docker run --network=NETWORK_NAME --name SERVICE_NAME_CONTAINER -p 8089:8089 -d SERVICE_IMAGE_NAME`
+* Build the image `docker build -t stableford-service .`
+* Run the service in our network `docker run --network=stableford-score-network --name stableford-service -p 8089:8089 -d stableford-service`
 * Check the logs `docker logs -f <CONTAINER_ID>`
 
 * Stop the server `docker stop <CONTAINER_ID>`

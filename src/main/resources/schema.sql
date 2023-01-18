@@ -25,5 +25,8 @@ CREATE TABLE `course_score`
     `stroke` VARCHAR(4),
     `course_name` VARCHAR(10),
     `date_of_play` VARCHAR(255),
-    `daily_handicap` VARCHAR(2)
+    `daily_handicap` VARCHAR(2),
+    `average_driver_distance` VARCHAR(10),
+    `stableford_score` VARCHAR(2),
+    `hole_code` VARCHAR(15)
 );

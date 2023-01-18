@@ -36,9 +36,9 @@ public class CourseScoreControllerTest {
     private UUID id = UUID.randomUUID();
     private String s = "2019-10-11T12:12:23.234Z";
     private Timestamp ts = Timestamp.from(Instant.parse(s));
-    private CourseScore courseScore = new CourseScore(90, "Waterford", ts, 20, 189.6, 37);
+    private CourseScore courseScore = new CourseScore(90, "Waterford", ts, 20, 189.6, 37, "19012022Morning");
 
-    private CourseScore newScore = new CourseScore(93, "Waterford", ts, 19, 189.6, 37);
+    private CourseScore newScore = new CourseScore(93, "Waterford", ts, 19, 189.6, 37, "19012022Morning");
 
     @Test
     void shouldReturnListOfCourseScores() throws Exception {

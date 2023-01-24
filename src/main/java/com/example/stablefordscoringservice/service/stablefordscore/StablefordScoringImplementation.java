@@ -80,5 +80,19 @@ public class StablefordScoringImplementation implements StablefordScoringService
         return updatedScore;
     }
 
+    @Override
+    public List<StablefordScore> getAllScoresByHoleCode(String holeCode) {
+        List<StablefordScore> result;
+        try {
+            result = stablefordScoringRepository.findStablefordScoresByHoleCode(holeCode);
+            if (result.isEmpty()) {
+                throw new CustomDataNotFoundException("No course scores data found. Please contact us for more details.");
+            }
+        } catch (ServerErrorException e) {
+            throw new ServerErrorException(e.getMessage());
+        }
+        return result;
+    }
+
 
 }

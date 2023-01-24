@@ -10,4 +10,5 @@ public interface StablefordScoringService {
     String addScore(StablefordScore score);
     Optional<StablefordScore> getScoreById(String id);
     StablefordScore updateScoreById(String id, StablefordScore updatedScore);
+    List<StablefordScore> getAllScoresByHoleCode(String holeCode);
 }

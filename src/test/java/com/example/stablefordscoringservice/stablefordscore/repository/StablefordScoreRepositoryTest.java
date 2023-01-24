@@ -82,4 +82,16 @@ public class StablefordScoreRepositoryTest {
         assertEquals(updatedScore.getPar(), 5);
         assertEquals(updatedScore.getHoleAnalysis().getTeeOffDirection(), "Hit");
     }
+
+    @Test
+    public void shouldGetScoreByHoleCode() {
+        newScore.setId(String.valueOf(id));
+        newAnalysis.setId(String.valueOf(id2));
+        newScore.setHoleAnalysis(newAnalysis);
+        StablefordScore newInsert = stablefordScoringRepository.save(newScore);
+        Optional<StablefordScore> actual = stablefordScoringRepository.findById(newInsert.getId());
+
+        assertEquals(actual, Optional.of(newInsert));
+        assertEquals(Optional.of(actual.get().getHoleCode()), Optional.of(newScore.getHoleCode()));
+    }
 }

@@ -26,7 +26,7 @@ public class CourseScoreImplementation implements CourseScoringService {
 
     @Override
     public List<CourseScore> getAllScores() {
-        Iterable<CourseScore> result = courseScoreRepository.findAll();
+        Iterable<CourseScore> result = courseScoreRepository.findAllByOrderByDateOfPlayDesc();
         List<CourseScore> retList;
         if (((ArrayList) result).isEmpty()) {
             throw new CustomDataNotFoundException("No course scores data found. Please contact us for more details.");

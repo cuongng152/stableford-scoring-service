@@ -84,6 +84,16 @@ public class StablefordScoreServiceTest {
         verify(stablefordScoringRepository, times(1)).findById(String.valueOf(id));
     }
 
+    @DisplayName("JUnit test for find score by holecode")
+    @Test
+    public void findScoreByHoleCode() {
+        when(stablefordScoringRepository.findStablefordScoresByHoleCode(score.getHoleCode())).thenReturn(Arrays.asList(score));
+        List<StablefordScore> result = stablefordScoringService.getAllScoresByHoleCode(score.getHoleCode());
+        assertThat(result).isNotNull();
+        assertEquals(Arrays.asList(score), result);
+        verify(stablefordScoringRepository, times(1)).findStablefordScoresByHoleCode(score.getHoleCode());
+    }
+
     @DisplayName("Throw an exception when data returns null")
     @Test
     public void throwExceptionWhenDataReturnsNull() {

@@ -63,4 +63,12 @@ public class StablefordScoringController {
     public @ResponseBody StablefordScore updateById(@PathVariable String id, @RequestBody StablefordScore updatedScore) {
         return stablefordScoringService.updateScoreById(id, updatedScore);
     }
+
+    @GetMapping("hole/{holeCode}")
+    /** Add security here*/
+    public @ResponseBody List<StablefordScore> getAllScoresByHoleCode(@PathVariable String holeCode) {
+        List<StablefordScore> response;
+        response = stablefordScoringService.getAllScoresByHoleCode(holeCode);
+        return response;
+    }
 }

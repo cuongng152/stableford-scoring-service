@@ -11,6 +11,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.lang.reflect.Array;
 import java.util.*;
 
 import static org.mockito.Mockito.when;
@@ -66,6 +67,16 @@ public class StablefordScoreControllerTest {
                 .andExpect(jsonPath("$.holeCode").value(score1.getHoleCode()))
                 .andExpect(jsonPath("$.length").value(score1.getLength()))
                 .andExpect(jsonPath("$.par").value(score1.getPar()))
+                .andDo(print());
+    }
+
+    @Test
+    void shouldReturnStablefordScoreByHoleCode() throws Exception {
+        List<StablefordScore> result = Arrays.asList(score1);
+        score1.setId(String.valueOf(id));
+        when(stablefordScoringService.getAllScoresByHoleCode(score1.getHoleCode())).thenReturn(result);
+        mockMvc.perform(get("/api/v1/stableford/hole/{id}", score1.getHoleCode())).andExpect(status().isOk())
+                .andExpect(jsonPath("$.size()").value(result.size()))
                 .andDo(print());
     }
 

@@ -3,6 +3,7 @@ package com.example.stablefordscoringservice.coursescore.service;
 import com.example.stablefordscoringservice.StablefordScoringServiceApplication;
 import com.example.stablefordscoringservice.entity.CourseScore;
 import com.example.stablefordscoringservice.exceptions.CustomDataNotFoundException;
+import com.example.stablefordscoringservice.exceptions.ServerErrorException;
 import com.example.stablefordscoringservice.repository.CourseScoreRepository;
 import com.example.stablefordscoringservice.service.coursescore.CourseScoreImplementation;
 import org.junit.jupiter.api.BeforeEach;
@@ -18,6 +19,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.sql.Timestamp;
 import java.time.Instant;
+import java.util.Arrays;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -75,14 +77,6 @@ public class CourseScoreServiceTest {
         when(repository.findById(String.valueOf(id))).thenReturn(null);
         assertThrows(NullPointerException.class, () -> {
             service.getScoreById(id.toString());
-        });
-    }
-
-    @DisplayName("Throw an exception when data not found")
-    @Test
-    public void throwExceptionWhenDataIsNotFound() {
-        assertThrows(CustomDataNotFoundException.class, () -> {
-            service.getAllScores();
         });
     }
 

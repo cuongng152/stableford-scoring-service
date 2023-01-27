@@ -26,12 +26,14 @@ public class CourseScoreImplementation implements CourseScoringService {
 
     @Override
     public List<CourseScore> getAllScores() {
-        Iterable<CourseScore> result = courseScoreRepository.findAllByOrderByDateOfPlayDesc();
+        Iterable<CourseScore> result;
         List<CourseScore> retList;
-        if (((ArrayList) result).isEmpty()) {
-            throw new CustomDataNotFoundException("No course scores data found. Please contact us for more details.");
+        try {
+            result = courseScoreRepository.findAllByOrderByDateOfPlayDesc();
+            retList = Streamable.of(result).toList();
+        } catch (Exception e) {
+            throw new ServerErrorException(e.getMessage());
         }
-        retList = Streamable.of(result).toList();
         return retList;
     }
 

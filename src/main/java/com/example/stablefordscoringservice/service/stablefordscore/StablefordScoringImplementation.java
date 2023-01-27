@@ -22,9 +22,6 @@ public class StablefordScoringImplementation implements StablefordScoringService
         List<StablefordScore> result;
         try {
             result = stablefordScoringRepository.findAll();
-            if (result.isEmpty()) {
-                throw new CustomDataNotFoundException("No course scores data found. Please contact us for more details.");
-            }
         } catch (ServerErrorException e) {
             throw new ServerErrorException(e.getMessage());
         }
@@ -85,9 +82,6 @@ public class StablefordScoringImplementation implements StablefordScoringService
         List<StablefordScore> result;
         try {
             result = stablefordScoringRepository.findStablefordScoresByHoleCode(holeCode);
-            if (result.isEmpty()) {
-                throw new CustomDataNotFoundException("No course scores data found. Please contact us for more details.");
-            }
         } catch (ServerErrorException e) {
             throw new ServerErrorException(e.getMessage());
         }

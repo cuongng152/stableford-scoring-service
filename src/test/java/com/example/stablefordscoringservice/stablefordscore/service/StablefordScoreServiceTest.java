@@ -103,33 +103,6 @@ public class StablefordScoreServiceTest {
         });
     }
 
-    @DisplayName("Throw an exception when data not found")
-    @Test
-    public void throwExceptionWhenDataIsNotFound() {
-        when(stablefordScoringRepository.findAll()).thenReturn(Arrays.asList());
-        assertThrows(CustomDataNotFoundException.class, () -> {
-            stablefordScoringService.getAllScores();
-        });
-    }
-
-    @DisplayName("Throw an exception when data not found")
-    @Test
-    public void throwNullPointerExceptionWhenDataIsNotFound() {
-        when(stablefordScoringRepository.findAll()).thenReturn(null);
-        assertThrows(NullPointerException.class, () -> {
-            stablefordScoringService.getAllScores();
-        });
-    }
-
-    @DisplayName("Throw an exception when data is empty")
-    @Test
-    public void throwExceptionWhenDataIsEmpty() {
-        when(stablefordScoringRepository.findAll()).thenReturn(Arrays.asList());
-        assertThrows(CustomDataNotFoundException.class, () -> {
-            stablefordScoringService.getAllScores();
-        });
-    }
-
     @DisplayName("JUnit test for update score by id")
     @Test
     public void updateScoreById() {

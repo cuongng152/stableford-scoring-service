@@ -1,6 +1,7 @@
 package com.example.stablefordscoringservice.coursescore.repository;
 
 import com.example.stablefordscoringservice.entity.CourseScore;
+import com.example.stablefordscoringservice.entity.StablefordScore;
 import com.example.stablefordscoringservice.repository.CourseScoreRepository;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -72,6 +73,16 @@ public class CourseScoreRepositoryTest {
 
         assertEquals(Optional.ofNullable(updatedScore.getDailyHandicap()), Optional.of(19));
         assertEquals(Optional.ofNullable(updatedScore.getStroke()), Optional.of(93));
+    }
+
+    @Test
+    public void shouldGetCourseScoreByHoleCode() {
+        courseScore.setId(String.valueOf(id));
+        CourseScore newInsert = courseScoreRepository.save(courseScore);
+        List<CourseScore> actual = courseScoreRepository.findCourseScoresByHoleCode(newInsert.getHoleCode());
+
+        assertEquals(actual, Arrays.asList(newInsert));
+        assertEquals(Optional.of(actual.get(0).getHoleCode()), Optional.of(courseScore.getHoleCode()));
     }
 }
 

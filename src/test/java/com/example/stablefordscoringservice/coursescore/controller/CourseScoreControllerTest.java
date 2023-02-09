@@ -2,6 +2,7 @@ package com.example.stablefordscoringservice.coursescore.controller;
 
 import com.example.stablefordscoringservice.controller.CourseScoreController;
 import com.example.stablefordscoringservice.entity.CourseScore;
+import com.example.stablefordscoringservice.entity.StablefordScore;
 import com.example.stablefordscoringservice.service.coursescore.CourseScoringService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
@@ -77,6 +78,16 @@ public class CourseScoreControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.stroke").value(newScore.getStroke()))
                 .andExpect(jsonPath("$.dailyHandicap").value(newScore.getDailyHandicap()))
+                .andDo(print());
+    }
+
+    @Test
+    void shouldReturnCourseScoreByHoleCode() throws Exception {
+        List<CourseScore> result = Arrays.asList(courseScore);
+        courseScore.setId(String.valueOf(id));
+        when(service.getAllCourseScoresByHoleCode(courseScore.getHoleCode())).thenReturn(result);
+        mockMvc.perform(get("/api/v1/course/holecode/{holeCode}", courseScore.getHoleCode())).andExpect(status().isOk())
+                .andExpect(jsonPath("$.size()").value(result.size()))
                 .andDo(print());
     }
 }

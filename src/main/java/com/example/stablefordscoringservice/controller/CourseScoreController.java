@@ -54,6 +54,14 @@ public class CourseScoreController {
         return courseScoringService.getScoreById(id);
     }
 
+    @GetMapping("/holecode/{holeCode}")
+    /** Add security here*/
+    public @ResponseBody List<CourseScore> getAllCourseScoresByHoleCode(@PathVariable String holeCode) {
+        List<CourseScore> response;
+        response = courseScoringService.getAllCourseScoresByHoleCode(holeCode);
+        return response;
+    }
+
     @PutMapping("/{id}")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204", description = "Score updated"),

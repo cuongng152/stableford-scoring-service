@@ -2,6 +2,7 @@ package com.example.stablefordscoringservice.coursescore.service;
 
 import com.example.stablefordscoringservice.StablefordScoringServiceApplication;
 import com.example.stablefordscoringservice.entity.CourseScore;
+import com.example.stablefordscoringservice.entity.StablefordScore;
 import com.example.stablefordscoringservice.exceptions.CustomDataNotFoundException;
 import com.example.stablefordscoringservice.exceptions.ServerErrorException;
 import com.example.stablefordscoringservice.repository.CourseScoreRepository;
@@ -20,6 +21,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -118,5 +120,15 @@ public class CourseScoreServiceTest {
         assertThrows(CustomDataNotFoundException.class, () -> {
             service.getScoreById(String.valueOf(id));
         });
+    }
+
+    @DisplayName("JUnit test for find score by holecode")
+    @Test
+    public void findScoreByHoleCode() {
+        when(repository.findCourseScoresByHoleCode(courseScore.getHoleCode())).thenReturn(Arrays.asList(courseScore));
+        List<CourseScore> result = service.getAllCourseScoresByHoleCode(courseScore.getHoleCode());
+        assertThat(result).isNotNull();
+        assertEquals(Arrays.asList(courseScore), result);
+        verify(repository, times(1)).findCourseScoresByHoleCode(courseScore.getHoleCode());
     }
 }

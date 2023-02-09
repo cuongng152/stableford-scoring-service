@@ -1,6 +1,7 @@
 package com.example.stablefordscoringservice.service.coursescore;
 
 import com.example.stablefordscoringservice.entity.CourseScore;
+import com.example.stablefordscoringservice.entity.StablefordScore;
 import com.example.stablefordscoringservice.exceptions.CustomDataNotFoundException;
 import com.example.stablefordscoringservice.exceptions.NullScoreException;
 import com.example.stablefordscoringservice.exceptions.ServerErrorException;
@@ -78,5 +79,16 @@ public class CourseScoreImplementation implements CourseScoringService {
             throw new NullScoreException(e.getMessage());
         }
         return update;
+    }
+
+    @Override
+    public List<CourseScore> getAllCourseScoresByHoleCode(String holeCode) {
+        List<CourseScore> result;
+        try {
+            result = courseScoreRepository.findCourseScoresByHoleCode(holeCode);
+        } catch (ServerErrorException e) {
+            throw new ServerErrorException(e.getMessage());
+        }
+        return result;
     }
 }

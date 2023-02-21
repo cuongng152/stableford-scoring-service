@@ -2,6 +2,12 @@ server:
   port: 8089
   error:
     path: /error
+  ssl:
+    key-store: classpath:springboot.p12
+    key-store-password: password
+    key-store-type: pkcs12
+    key-alias: springboot
+    key-password: password
 
 spring:
   h2:

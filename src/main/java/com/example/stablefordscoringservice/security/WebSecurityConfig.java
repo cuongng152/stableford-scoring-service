@@ -16,18 +16,17 @@ public class WebSecurityConfig implements WebMvcConfigurer {
 
         registry.addMapping("/api/**")
                 .allowedOrigins("https://master.dg1gxs71ljkjp.amplifyapp.com")
-                .allowedOrigins("http://127.0.0.1:3000")
+                .allowedOrigins("http://172.23.192.1:3000")
                 .allowedOrigins("http://localhost:3000")
                 .allowedMethods("PUT", "POST", "GET")
-                .allowedHeaders("header1", "header2", "header3")
-                .exposedHeaders("header1", "header2")
-                .allowCredentials(true).maxAge(3600);
-
+                .allowedHeaders("Origin", "Content-Type")
+                .exposedHeaders("header1", "header2");
         // Add more mappings...
     }
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        http.cors().disable();
         http
                 // ...
                 .requiresChannel(channel -> channel

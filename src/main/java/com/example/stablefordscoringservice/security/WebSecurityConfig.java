@@ -15,7 +15,7 @@ public class WebSecurityConfig implements WebMvcConfigurer {
     public void addCorsMappings(CorsRegistry registry) {
 
         registry.addMapping("/api/**")
-                .allowedOrigins("https://master.dg1gxs71ljkjp.amplifyapp.com", "https://127.0.0.1:3000")
+                .allowedOrigins("https://master.dg1gxs71ljkjp.amplifyapp.com", "https://127.0.0.1:3000", "https://localhost:3000")
                 .allowedMethods("PUT", "POST", "GET")
                 .allowedHeaders("header1", "header2", "header3")
                 .exposedHeaders("header1", "header2")

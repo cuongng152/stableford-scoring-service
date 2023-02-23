@@ -19,6 +19,7 @@ import java.util.Optional;
 @Tag(name = "Course Scoring Service Endpoints")
 @RequestMapping(path = "/api/v1/course")
 @CrossOrigin(origins = {"https://master.dg1gxs71ljkjp.amplifyapp.com", " http://172.23.192.1:3000", "http://localhost:3000"})
+//@CrossOrigin
 @ResponseStatus(HttpStatus.OK)
 @ApiResponses(value = {
         @ApiResponse(responseCode = "200"),

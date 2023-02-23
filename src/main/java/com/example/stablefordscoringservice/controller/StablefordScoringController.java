@@ -18,7 +18,7 @@ import java.util.Optional;
 @Controller
 @Tag(name = "Stableford Scoring Service Endpoints")
 @RequestMapping(path = "/api/v1/stableford")
-@CrossOrigin(origins = {"https://master.dg1gxs71ljkjp.amplifyapp.com", "https://127.0.0.1:3000", "https://localhost:3000"})
+@CrossOrigin(origins = {"https://master.dg1gxs71ljkjp.amplifyapp.com", "https://127.0.0.1:3000"})
 @ResponseStatus(HttpStatus.OK)
 @ApiResponses(value = {
         @ApiResponse(responseCode = "200"),
